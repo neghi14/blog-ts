@@ -8,4 +8,7 @@ export default {
   database: {
     url: process.env.DATABASE_URL || "",
   },
+  url: {
+    api: process.env.BASE_URL || ""
+  }
 };
