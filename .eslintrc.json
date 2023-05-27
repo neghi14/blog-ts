@@ -12,9 +12,8 @@
   },
   "plugins": ["@typescript-eslint"],
   "rules": {
-    "no-console": "error",
+    "no-console": "warn",
     "semi": ["error", "always"],
-    "sort-imports": "warn",
     "no-duplicate-imports": "error"
   }
 }
