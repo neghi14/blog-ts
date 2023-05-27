@@ -1,6 +1,7 @@
 import { Server } from "./common/config/server";
 import express from "express";
 import morgan from "morgan";
+import { Routes } from "./common/routes/routes.config";
 
 const app = express();
 
@@ -22,5 +23,7 @@ app.use(
     next();
   }
 );
+new Routes(app).routes();
+
 const server = new Server(app);
 server.start();
