@@ -1,5 +1,6 @@
 import config from "../config/config";
 import mongoose from "mongoose";
+import "reflect-metadata";
 
 const dbconnect = () => {
   mongoose
@@ -22,15 +23,15 @@ const createData = (model: any, data: any) => {
 
 const getSingleData = (model: any, data: any, options?: any) => {
   try {
-    return model.findOne(data, options);
+    return model.findOne(data._id``, options);
   } catch (error: any) {
     return error.message;
   }
 };
 
-const getAllData = (model: any, data: any, options?: any) => {
+const getAllData = (model: any, options?: any) => {
   try {
-    return model.find(data, options);
+    return model.find(options);
   } catch (error: any) {
     return error.message;
   }

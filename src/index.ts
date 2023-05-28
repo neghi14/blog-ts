@@ -1,3 +1,4 @@
+import "reflect-metadata";
 import { Server } from "./common/config/server";
 import express from "express";
 import morgan from "morgan";
