@@ -21,15 +21,7 @@ const createData = (model: any, data: any) => {
   }
 };
 
-const getSingleData = (model: any, data: any, options?: any) => {
-  try {
-    return model.findOne(data._id``, options);
-  } catch (error: any) {
-    return error.message;
-  }
-};
-
-const getAllData = (model: any, options?: any) => {
+const getData = (model: any, options?: any) => {
   try {
     return model.find(options);
   } catch (error: any) {
@@ -39,7 +31,7 @@ const getAllData = (model: any, options?: any) => {
 
 const updateData = (model: any, data: any, payload: any) => {
   try {
-    return model.findByIdAndUpdate(data, payload);
+    return model.findByIdAndUpdate(data, payload, { new: true });
   } catch (error: any) {
     return error.message;
   }
@@ -53,11 +45,4 @@ const deleteData = (model: any, data: any) => {
   }
 };
 
-export {
-  dbconnect,
-  createData,
-  updateData,
-  getAllData,
-  getSingleData,
-  deleteData,
-};
+export { dbconnect, createData, updateData, getData, deleteData };

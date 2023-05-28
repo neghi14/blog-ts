@@ -11,12 +11,12 @@ blogRouter.get("/all", (req: express.Request, res: express.Response) =>
 blogRouter.post("/", (req: express.Request, res: express.Response) =>
   blogController.createBlog(req, res)
 );
-blogRouter.get("/:id", (req: express.Request, res: express.Response) => {
-  res.status(200).json({ message: "Shit works" });
-});
-blogRouter.patch("/:id", (req: express.Request, res: express.Response) => {
-  res.status(200).json({ message: "Shit works" });
-});
+blogRouter.get("/:id", (req: express.Request, res: express.Response) =>
+  blogController.getOne(req, res)
+);
+blogRouter.patch("/:id", (req: express.Request, res: express.Response) =>
+  blogController.updateBlog(req, res)
+);
 blogRouter.delete("/:id", (req: express.Request, res: express.Response) =>
   blogController.removeBlog(req, res)
 );
