@@ -1,5 +1,5 @@
 import {
-  getData,
+  readData,
   createData,
   updateData,
   deleteData,
@@ -11,10 +11,10 @@ import { injectable } from "tsyringe";
 @injectable()
 export default class BlogRepository {
   async getAllBlog() {
-    return await getData(blogSchema);
+    return await readData(blogSchema);
   }
   async getSingleBlog(data: any) {
-    return await getData(blogSchema, data);
+    return await readData(blogSchema, data);
   }
   async addBlog(data: Blog) {
     return await createData(blogSchema, data);

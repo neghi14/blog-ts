@@ -15,6 +15,7 @@ export default class DeleteBlog implements Service<Request, Response> {
         res,
         statuscode: 204,
         status: "success",
+        message: "Blog has been deleted",
       });
     } catch (error: any) {
       this.http.Response({

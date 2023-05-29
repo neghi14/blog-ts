@@ -21,7 +21,7 @@ const createData = (model: any, data: any) => {
   }
 };
 
-const getData = (model: any, options?: any) => {
+const readData = (model: any, options?: any) => {
   try {
     return model.find(options);
   } catch (error: any) {
@@ -45,4 +45,4 @@ const deleteData = (model: any, data: any) => {
   }
 };
 
-export { dbconnect, createData, updateData, getData, deleteData };
+export { dbconnect, createData, updateData, readData, deleteData };
