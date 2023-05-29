@@ -13,8 +13,8 @@ export default class Http {
 
 interface responseModel {
   res: Response;
-  statuscode?: number;
-  status?: "success" | "error";
-  message?: string;
+  statuscode: number;
+  status: "success" | "error";
+  message: string;
   data?: any;
 }

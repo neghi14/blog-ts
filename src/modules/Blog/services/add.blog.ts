@@ -29,6 +29,7 @@ export default class AddBlog implements Service<Request, Response> {
     } catch (error: any) {
       this.http.Response({
         res,
+        statuscode: 503,
         status: "error",
         message: error.message,
       });
