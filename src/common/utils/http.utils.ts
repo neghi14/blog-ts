@@ -1,7 +1,13 @@
 import { Response } from "express";
 
 export default class Http {
-  Response({ res, statuscode, status, message, data }: responseModel) {
+  Response({
+    res,
+    statuscode,
+    status,
+    message,
+    data,
+  }: responseModel) {
     const response: Response = res.status(statuscode || 500).json({
       status,
       message,
@@ -17,4 +23,5 @@ interface responseModel {
   status: "success" | "error";
   message: string;
   data?: any;
+  token?: string;
 }

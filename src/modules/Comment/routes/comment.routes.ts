@@ -1,30 +1,21 @@
-import express from "express";
+import { Request, Response, Router } from "express";
 import { container } from "tsyringe";
 import CommentController from "../controller/comment.controller";
 
 const commentController = container.resolve(CommentController);
 
-const commentRouter: express.Router = express.Router();
+const commentRouter: Router = Router();
 
-commentRouter.get("/all", (req: express.Request, res: express.Response) =>
-  commentController.getAll(req, res)
-);
-commentRouter.post("/", (req: express.Request, res: express.Response) =>
-  commentController.createComment(req, res)
-);
-commentRouter.get("/:id", (req: express.Request, res: express.Response) =>
-  commentController.getOne(req, res)
-);
-commentRouter.patch("/:id", (req: express.Request, res: express.Response) => {
-  res.status(200).json({ message: "Shit works" });
-});
-commentRouter.patch(
-  "/restrict/:id",
-  (req: express.Request, res: express.Response) =>
-    commentController.adminRestrictComment(req, res)
-);
-commentRouter.delete("/:id", (req: express.Request, res: express.Response) => {
-  res.status(200).json({ message: "Shit works" });
-});
+commentRouter.get("/all", (req: Request, res: Response) => commentController.getAll(req, res));
+
+commentRouter.post("/", (req: Request, res: Response) => commentController.postComment(req, res));
+
+commentRouter.get("/:id", (req: Request, res: Response) => commentController.getOne(req, res));
+
+commentRouter.patch("/:id", (req: Request, res: Response) => commentController.patchComment(req, res));
+
+commentRouter.patch("/restrict/:id", (req: Request, res: Response) => commentController.adminRestrictComment(req, res));
+
+commentRouter.delete("/:id", (req: Request, res: Response) => commentController.deleteComment(req, res));
 
 export default commentRouter;

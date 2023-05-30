@@ -1,24 +1,23 @@
 import { injectable } from "tsyringe";
-import UserRepository from "../repositories/user.repository";
 import Service from "../../../common/interface/service.interface";
 import { Request, Response } from "express";
+import CommentRepository from "../repository/comment.repository";
 import Http from "../../../common/utils/http.utils";
 
 @injectable()
-export default class GetUser implements Service<Request, Response> {
-  constructor(private userRepository: UserRepository, private http: Http) {}
+export default class DeleteCommentService implements Service<Request, Response> {
+  constructor(private commentRepository: CommentRepository, private http: Http) {}
   async execute(req: Request, res: Response) {
     try {
       const { id } = req.params;
 
-      const data = await this.userRepository.getSingleUser({ _id: id });
+      await this.commentRepository.deleteComment({ _id: id });
 
       this.http.Response({
         res,
         status: "success",
-        statuscode: 200,
-        message: "User successfully retrieved",
-        data,
+        statuscode: 204,
+        message: "Comment has been deleted",
       });
     } catch (error: any) {
       this.http.Response({

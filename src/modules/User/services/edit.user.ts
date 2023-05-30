@@ -1,13 +1,13 @@
 import { injectable } from "tsyringe";
-import Service from "../../../../common/interface/service.interface";
+import Service from "../../../common/interface/service.interface";
 import { Request, Response } from "express";
-import UserRepository from "../../repositories/user.repository";
-import Http from "../../../../common/utils/http.utils";
-import { createHash } from "../../../../common/utils/bcryptjs.utils";
-import { User } from "../../../../common/database/model";
+import UserRepository from "../repositories/user.repository";
+import Http from "../../../common/utils/http.utils";
+import { createHash } from "../../../common/utils/bcryptjs.utils";
+import { User } from "../../../common/database/model";
 
 @injectable()
-export default class AddUserService
+export default class EditUserService
   implements Service<Request, Response>
 {
   constructor(
@@ -16,36 +16,36 @@ export default class AddUserService
   ) {}
   async execute(req: Request, res: Response) {
     try {
-      const { username, password, name, email, phone } = req.body;
+      const { id } = req.params;
+
+      const { password } = req.body;
 
       const hashedPassword = await createHash(password);
 
       const newUserPayload: User = {
-        username,
         password: hashedPassword,
-        name,
-        email,
-        phone,
+        updated_at: new Date(),
       };
 
-      const data = await this.userRepository.createUser(
+      const data = await this.userRepository.updateUser(
+        { _id: id },
         newUserPayload
       );
+
       this.http.Response({
         res,
         status: "success",
         statuscode: 201,
-        message: "User successfully created",
+        message: "User data has been updated",
         data,
       });
     } catch (error: any) {
       this.http.Response({
         res,
         status: "error",
-        statuscode: 503,
+        statuscode: 500,
         message: error.message,
       });
-     
     }
   }
 }

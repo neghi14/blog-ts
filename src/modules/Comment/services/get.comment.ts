@@ -5,7 +5,7 @@ import Service from "../../../common/interface/service.interface";
 import { Request, Response } from "express";
 
 @injectable()
-export default class GetComment implements Service<Request, Response> {
+export default class GetCommentService implements Service<Request, Response> {
   constructor(
     private commentRepository: CommentRepository,
     private http: Http
@@ -14,7 +14,7 @@ export default class GetComment implements Service<Request, Response> {
     try {
       const { id } = req.params;
 
-      const data = await this.commentRepository.getSingleComment({ _id: id });
+      const data = await this.commentRepository.readSingleComment({ _id: id });
 
       this.http.Response({
         res,

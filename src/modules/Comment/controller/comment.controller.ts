@@ -1,47 +1,40 @@
 import { injectable } from "tsyringe";
 import { Request, Response } from "express";
-import AddComment from "../services/addcomment.service";
-import RestrictComment from "../services/admin/restrict.service";
-import GetComment from "../services/getcomment.service";
-import CommentRepository from "../repository/comment.repository";
-import Http from "../../../common/utils/http.utils";
+import RestrictComment from "../services/admin/restrict.comment";
+import GetCommentsService from "../services/get.comments";
+import AddCommentService from "../services/add.comment";
+import GetCommentService from "../services/get.comment";
+import DeleteCommentService from "../services/delete.comment";
+import EditCommentService from "../services/edit.comment";
 
 @injectable()
 export default class CommentController {
   constructor(
-    private addComment: AddComment,
-    private restrictComment: RestrictComment,
-    private getComment: GetComment,
-    private commentRepository: CommentRepository,
-    private http: Http
+    private getComment: GetCommentService,
+    private getAllComments: GetCommentsService,
+    private addComment: AddCommentService,
+    private editComment: EditCommentService,
+    private removeComment: DeleteCommentService,
+    private restrictComment: RestrictComment
   ) {}
 
   async getAll(req: Request, res: Response) {
-    try {
-      const data = await this.commentRepository.getAllComment();
-
-      this.http.Response({
-        res,
-        status: "success",
-        statuscode: 200,
-        message: "All comments have been retrieved",
-        data,
-      });
-    } catch (error: any) {
-      this.http.Response({
-        res,
-        status: "error",
-        statuscode: 500,
-        message: error.message,
-      });
-    }
+    await this.getAllComments.execute(req, res);
   }
   async getOne(req: Request, res: Response) {
     await this.getComment.execute(req, res);
   }
 
-  async createComment(req: Request, res: Response) {
+  async postComment(req: Request, res: Response) {
     await this.addComment.execute(req, res);
+  }
+
+  async patchComment(req: Request, res: Response) {
+    await this.editComment.execute(req, res);
+  }
+
+  async deleteComment(req: Request, res: Response) {
+    await this.removeComment.execute(req, res);
   }
 
   async adminRestrictComment(req: Request, res: Response) {

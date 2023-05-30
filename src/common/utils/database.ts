@@ -1,5 +1,5 @@
 import config from "../config/config";
-import mongoose from "mongoose";
+import mongoose, { Model } from "mongoose";
 import "reflect-metadata";
 
 const dbconnect = () => {
@@ -13,7 +13,7 @@ const dbconnect = () => {
     });
 };
 
-const createData = (model: any, data: any) => {
+const createData = (model: Model<any>, data: Record<string, string | number>) => {
   try {
     return model.create(data);
   } catch (error) {
@@ -21,15 +21,27 @@ const createData = (model: any, data: any) => {
   }
 };
 
-const readData = (model: any, options?: any) => {
+const readAllData = (model: Model<any>, filter?: any) => {
   try {
-    return model.find(options);
+    return model.find(filter);
   } catch (error: any) {
     return error.message;
   }
 };
 
-const updateData = (model: any, data: any, payload: any) => {
+const readSingleData = (model: Model<any>, options: Record<string, string | number>) => {
+  try {
+    return model.findOne(options);
+  } catch (error: any) {
+    return error.message;
+  }
+};
+
+const updateData = (
+  model: Model<any>,
+  data: Record<string, string | number>,
+  payload: Record<string, string | number>
+) => {
   try {
     return model.findByIdAndUpdate(data, payload, { new: true });
   } catch (error: any) {
@@ -37,7 +49,7 @@ const updateData = (model: any, data: any, payload: any) => {
   }
 };
 
-const deleteData = (model: any, data: any) => {
+const deleteData = (model: Model<any>, data: Record<string, string | number>) => {
   try {
     return model.findByIdAndRemove(data);
   } catch (error: any) {
@@ -45,4 +57,4 @@ const deleteData = (model: any, data: any) => {
   }
 };
 
-export { dbconnect, createData, updateData, readData, deleteData };
+export { dbconnect, createData, updateData, readAllData, readSingleData, deleteData };

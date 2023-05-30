@@ -1,33 +1,33 @@
 import { injectable } from "tsyringe";
-import GetUser from "../services/getuser.service";
 import { Request, Response } from "express";
-import GetUsers from "../services/getusers.service";
-import AddUserService from "../services/admin/adduser.service";
-import EditUserService from "../services/edituser.service";
-import DeleteUserService from "../services/admin/deleteuser.service";
+import AddUserService from "../services/add.user";
+import EditUserService from "../services/edit.user";
+import DeleteUserService from "../services/delete.user";
+import GetUserService from "../services/get.user";
+import GetUsersService from "../services/get.users";
 
 @injectable()
 export default class UserController {
   constructor(
-    private getUser: GetUser,
-    private getUsers: GetUsers,
+    private getUser: GetUserService,
+    private getUsers: GetUsersService,
     private createUser: AddUserService,
     private editUser: EditUserService,
-    private deleteUser: DeleteUserService
+    private removeUser: DeleteUserService
   ) {}
-  async getAll(req: Request, res: Response) {
+  async getAllUser(req: Request, res: Response) {
     await this.getUsers.execute(req, res);
   }
-  async getOne(req: Request, res: Response) {
+  async getSingleUser(req: Request, res: Response) {
     await this.getUser.execute(req, res);
   }
-  async createOne(req: Request, res: Response) {
+  async postUser(req: Request, res: Response) {
     await this.createUser.execute(req, res);
   }
-  async updateOne(req: Request, res: Response) {
+  async patchUser(req: Request, res: Response) {
     await this.editUser.execute(req, res);
   }
-  async deleteOne(req: Request, res: Response) {
-    await this.deleteUser.execute(req, res);
+  async deleteUser(req: Request, res: Response) {
+    await this.removeUser.execute(req, res);
   }
 }

@@ -5,12 +5,12 @@ import { injectable } from "tsyringe";
 import Service from "../../../common/interface/service.interface";
 
 @injectable()
-export default class GetBlogService implements Service<Request, Response> {
+export default class GetBlogsService implements Service<Request, Response> {
   constructor(private blogRepository: BlogRepository, private http: Http) {}
   async execute(req: Request, res: Response) {
     try {
-      const { id } = req.params;
-      const data = await this.blogRepository.readSingleBlog({ _id: id });
+      
+      const data = await this.blogRepository.readAllBlog();
 
       this.http.Response({
         res,
