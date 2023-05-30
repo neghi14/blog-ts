@@ -2,6 +2,7 @@ import "reflect-metadata";
 import { Server } from "./common/config/server";
 import express from "express";
 import morgan from "morgan";
+import cookieParser from "cookie-parser";
 import { Routes } from "./common/routes/routes.config";
 
 const app = express();
@@ -9,9 +10,14 @@ const app = express();
 //middlewares
 app.use(express.json());
 app.use(morgan("tiny"));
+app.use(cookieParser());
 
 app.use(
-  (req: express.Request, res: express.Response, next: express.NextFunction) => {
+  (
+    req: express.Request,
+    res: express.Response,
+    next: express.NextFunction
+  ) => {
     res.setHeader("Access-Control-Allow-Origin", "*");
     res.setHeader(
       "Access-Control-Allow-Headers",
@@ -24,6 +30,7 @@ app.use(
     next();
   }
 );
+
 new Routes(app).routes();
 
 const server = new Server(app);

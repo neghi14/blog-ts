@@ -22,7 +22,7 @@ export default class RestrictComment implements Service<Request, Response> {
         updated_at: new Date(),
       };
 
-      const data = await this.commentRepository.editComment(
+      const data = await this.commentRepository.updateComment(
         { _id: id },
         restrictComment
       );

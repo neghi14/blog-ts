@@ -1,28 +1,22 @@
 import { injectable } from "tsyringe";
-import {
-  createData,
-  readData,
-  updateData,
-  deleteData,
-} from "../../../common/utils/database";
+import { createData, updateData, deleteData, readAllData, readSingleData } from "../../../common/utils/database";
 import userSchema from "../../../common/database/schema/user.schema";
-import { User } from "../../../common/database/model";
 
 @injectable()
 export default class UserRepository {
-  async getAllUser() {
-    return await readData(userSchema);
+  async readAllUser() {
+    return await readAllData(userSchema);
   }
-  async getSingleUser(data: any) {
-    return await readData(userSchema, data);
+  async readSingleUser(data: Record<string, string | number>) {
+    return await readSingleData(userSchema, data);
   }
-  async editUser(data: User, payload: User) {
+  async updateUser(data: Record<string, string | number>, payload: Record<string, string | number>) {
     return await updateData(userSchema, data, payload);
   }
-  async createUser(data: User) {
+  async createUser(data: Record<string, string | number>) {
     return await createData(userSchema, data);
   }
-  async deleteUser(data: User) {
+  async deleteUser(data: Record<string, string | number>) {
     return await deleteData(userSchema, data);
   }
 }

@@ -1,22 +1,21 @@
 import { injectable } from "tsyringe";
-import UserRepository from "../repositories/user.repository";
-import { User } from "../../../common/database/model";
 import Service from "../../../common/interface/service.interface";
-import { Request, Response } from "express";
+import CommentRepository from "../repository/comment.repository";
 import Http from "../../../common/utils/http.utils";
+import { Request, Response } from "express";
 
 @injectable()
-export default class GetUsers implements Service<Request, Response> {
-  constructor(private userRepository: UserRepository, private http: Http) {}
+export default class GetCommentsService implements Service<Request, Response> {
+  constructor(private commentRepository: CommentRepository, private http: Http) {}
   async execute(req: Request, res: Response) {
     try {
-      const data = await this.userRepository.getAllUser();
+      const data = await this.commentRepository.readAllComment();
 
       this.http.Response({
         res,
         status: "success",
         statuscode: 200,
-        message: "Users successfully retrieved",
+        message: "All comments have been retrieved",
         data,
       });
     } catch (error: any) {

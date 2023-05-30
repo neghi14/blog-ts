@@ -1,51 +1,47 @@
 import { injectable } from "tsyringe";
 import Service from "../../../../common/interface/service.interface";
 import { Request, Response } from "express";
-import UserRepository from "../../repositories/user.repository";
+import UserRepository from "../../../User/repositories/user.repository";
 import Http from "../../../../common/utils/http.utils";
 import { createHash } from "../../../../common/utils/bcryptjs.utils";
 import { User } from "../../../../common/database/model";
 
 @injectable()
-export default class AddUserService
-  implements Service<Request, Response>
-{
-  constructor(
-    private userRepository: UserRepository,
-    private http: Http
-  ) {}
+export default class ChangePasswordService implements Service<Request, Response> {
+  constructor(private userRepository: UserRepository, private http: Http) {}
   async execute(req: Request, res: Response) {
     try {
-      const { username, password, name, email, phone } = req.body;
+      const { id } = req.params;
 
-      const hashedPassword = await createHash(password);
+      const { password, confirm_password } = req.body;
+
+      if (password !== confirm_password) {
+        console.log("error");
+      }
+
+      const hashPassword = await createHash(password);
 
       const newUserPayload: User = {
-        username,
-        password: hashedPassword,
-        name,
-        email,
-        phone,
+        password: hashPassword,
+        updated_at: new Date(),
       };
 
-      const data = await this.userRepository.createUser(
-        newUserPayload
-      );
+      const data = await this.userRepository.updateUser({ _id: id }, newUserPayload);
+
       this.http.Response({
         res,
         status: "success",
         statuscode: 201,
-        message: "User successfully created",
+        message: "Successfully Updated password",
         data,
       });
     } catch (error: any) {
       this.http.Response({
         res,
         status: "error",
-        statuscode: 503,
+        statuscode: 500,
         message: error.message,
       });
-     
     }
   }
 }

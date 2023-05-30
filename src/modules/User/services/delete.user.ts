@@ -3,11 +3,9 @@ import Service from "../../../common/interface/service.interface";
 import { Request, Response } from "express";
 import UserRepository from "../repositories/user.repository";
 import Http from "../../../common/utils/http.utils";
-import { createHash } from "../../../common/utils/bcryptjs.utils";
-import { User } from "../../../common/database/model";
 
 @injectable()
-export default class EditUserService
+export default class DeleteUserService
   implements Service<Request, Response>
 {
   constructor(
@@ -17,27 +15,13 @@ export default class EditUserService
   async execute(req: Request, res: Response) {
     try {
       const { id } = req.params;
-
-      const { password } = req.body;
-
-      const hashedPassword = await createHash(password);
-
-      const newUserPayload: User = {
-        password: hashedPassword,
-        updated_at: new Date(),
-      };
-
-      const data = await this.userRepository.editUser(
-        { _id: id },
-        newUserPayload
-      );
+      await this.userRepository.deleteUser({ _id: id });
 
       this.http.Response({
         res,
         status: "success",
-        statuscode: 201,
-        message: "User data has been updated",
-        data,
+        statuscode: 204,
+        message: "User successfully removed from database",
       });
     } catch (error: any) {
       this.http.Response({

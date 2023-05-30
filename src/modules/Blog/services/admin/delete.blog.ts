@@ -5,12 +5,12 @@ import BlogRepository from "../../repository/blog.repository";
 import { injectable } from "tsyringe";
 
 @injectable()
-export default class DeleteBlog implements Service<Request, Response> {
+export default class DeleteBlogService implements Service<Request, Response> {
   constructor(private blogRepository: BlogRepository, private http: Http) {}
   async execute(req: Request, res: Response) {
     try {
       const { id } = req.params;
-      await this.blogRepository.removeBlog(id);
+      await this.blogRepository.deleteBlog({_id: id});
       this.http.Response({
         res,
         statuscode: 204,

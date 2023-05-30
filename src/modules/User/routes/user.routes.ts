@@ -1,33 +1,19 @@
 import { container } from "tsyringe";
-import express from "express";
+import { Request, Response, Router } from "express";
 import UserController from "../controller/user.controller";
 
-const userRouter: express.Router = express.Router();
+const userRouter: Router = Router();
 
 const userController = container.resolve(UserController);
 
-userRouter.get(
-  "/all",
-  (req: express.Request, res: express.Response) =>
-    userController.getAll(req, res)
-);
-userRouter.post("/", (req: express.Request, res: express.Response) =>
-  userController.createOne(req, res)
-);
-userRouter.get(
-  "/:id",
-  (req: express.Request, res: express.Response) =>
-    userController.getOne(req, res)
-);
-userRouter.patch(
-  "/:id",
-  (req: express.Request, res: express.Response) =>
-    userController.updateOne(req, res)
-);
-userRouter.delete(
-  "/:id",
-  (req: express.Request, res: express.Response) =>
-    userController.deleteOne(req, res)
-);
+userRouter.get("/all", (req: Request, res: Response) => userController.getAllUser(req, res));
+
+userRouter.post("/", (req: Request, res: Response) => userController.postUser(req, res));
+
+userRouter.get("/:id", (req: Request, res: Response) => userController.getSingleUser(req, res));
+
+userRouter.patch("/:id", (req: Request, res: Response) => userController.patchUser(req, res));
+
+userRouter.delete("/:id", (req: Request, res: Response) => userController.deleteUser(req, res));
 
 export default userRouter;

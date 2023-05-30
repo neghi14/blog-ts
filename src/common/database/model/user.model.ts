@@ -6,4 +6,5 @@ export interface User extends Base {
   name?: string;
   email?: string;
   phone?: number;
+  is_active?: boolean;
 }
