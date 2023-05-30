@@ -25,7 +25,7 @@ export default class CustomerLoginService
       }
 
       //Fetch data
-      const user = await this.userRepository.getSingleUser({
+      const user = await this.userRepository.readSingleUser({
         username,
       });
       if (!user) {
@@ -35,14 +35,14 @@ export default class CustomerLoginService
       //confirm Password
       const confirmPassword = await compareHash(
         password,
-        user[0].password
+        user.password
       );
       if (!confirmPassword) {
         this.errorHandler.passwordNotMatch();
       }
 
       //create token
-      const token = createToken(user[0]);
+      const token = createToken(user);
 
       //store token
       const data = {

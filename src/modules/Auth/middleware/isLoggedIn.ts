@@ -18,10 +18,9 @@ export default class LoggedIn {
 
       const confirmToken = await verifyToken(authToken);
 
-       const data = await this.userRepository.getSingleUser({});
+      const data = await this.userRepository.readSingleUser({ _id: confirmToken.data });
 
-      //   req.body.user = data._id;
-      console.log(confirmToken.data);
+      req.body.user = data._id;
       next();
     } catch (error: any) {
       console.log(error.message);

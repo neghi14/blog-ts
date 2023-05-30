@@ -18,7 +18,7 @@ export class Routes {
 
     //AUTH ENDPOINT
     //this.app.use(`${config.url.api}/admin`, adminRouter);
-    //this.app.use(`${config.url.api}/auth`, userAuthRouter);
+    this.app.use(`${config.url.api}/auth`, userAuthRouter);
 
     //Error Handling
     this.app.all("*", (req: express.Request, res: express.Response) => {
