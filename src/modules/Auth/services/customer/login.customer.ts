@@ -1,27 +1,21 @@
 import { injectable } from "tsyringe";
 import Service from "../../../../common/interface/service.interface";
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import UserRepository from "../../../User/repositories/user.repository";
 import Http from "../../../../common/utils/http.utils";
 import { compareHash } from "../../../../common/utils/bcryptjs.utils";
 import { createToken } from "../../../../common/utils/jwt.utils";
-import ErrorHelper from "../../../../common/helpers/error.helper";
+import ErrorUtility from "../../../../common/utils/error.utils";
 
 @injectable()
-export default class CustomerLoginService
-  implements Service<Request, Response>
-{
-  constructor(
-    private userRepository: UserRepository,
-    private http: Http,
-    private errorHandler: ErrorHelper
-  ) {}
-  async execute(req: Request, res: Response) {
+export default class CustomerLoginService implements Service<Request, Response, NextFunction> {
+  constructor(private userRepository: UserRepository, private http: Http) {}
+  async execute(req: Request, res: Response, next: NextFunction) {
     try {
       //Get user details
       const { username, password } = req.body;
       if (!username || !password) {
-        this.errorHandler.emptyFields();
+        return next(new ErrorUtility("Username or Password must not be empty", 404));
       }
 
       //Fetch data
@@ -29,16 +23,13 @@ export default class CustomerLoginService
         username,
       });
       if (!user) {
-        this.errorHandler.userNotFound();
+        return next(new ErrorUtility("User not found!", 400));
       }
 
       //confirm Password
-      const confirmPassword = await compareHash(
-        password,
-        user.password
-      );
+      const confirmPassword = await compareHash(password, user.password);
       if (!confirmPassword) {
-        this.errorHandler.passwordNotMatch();
+        return next(new ErrorUtility("Invalid Credentials", 400));
       }
 
       //create token
@@ -58,13 +49,8 @@ export default class CustomerLoginService
         message: "Log in Successful",
         data,
       });
-    } catch (error: any) {
-      this.http.Response({
-        res,
-        status: "error",
-        statuscode: 500,
-        message: error.message,
-      });
+    } catch (error) {
+      return next(error);
     }
   }
 }

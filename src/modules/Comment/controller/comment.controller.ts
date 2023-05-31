@@ -1,5 +1,5 @@
 import { injectable } from "tsyringe";
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import RestrictComment from "../services/admin/restrict.comment";
 import GetCommentsService from "../services/get.comments";
 import AddCommentService from "../services/add.comment";
@@ -18,26 +18,26 @@ export default class CommentController {
     private restrictComment: RestrictComment
   ) {}
 
-  async getAll(req: Request, res: Response) {
-    await this.getAllComments.execute(req, res);
+  async getAll(req: Request, res: Response, next: NextFunction) {
+    await this.getAllComments.execute(req, res, next);
   }
-  async getOne(req: Request, res: Response) {
-    await this.getComment.execute(req, res);
-  }
-
-  async postComment(req: Request, res: Response) {
-    await this.addComment.execute(req, res);
+  async getOne(req: Request, res: Response, next: NextFunction) {
+    await this.getComment.execute(req, res, next);
   }
 
-  async patchComment(req: Request, res: Response) {
-    await this.editComment.execute(req, res);
+  async postComment(req: Request, res: Response, next: NextFunction) {
+    await this.addComment.execute(req, res, next);
   }
 
-  async deleteComment(req: Request, res: Response) {
-    await this.removeComment.execute(req, res);
+  async patchComment(req: Request, res: Response, next: NextFunction) {
+    await this.editComment.execute(req, res, next);
   }
 
-  async adminRestrictComment(req: Request, res: Response) {
-    await this.restrictComment.execute(req, res);
+  async deleteComment(req: Request, res: Response, next: NextFunction) {
+    await this.removeComment.execute(req, res, next);
+  }
+
+  async adminRestrictComment(req: Request, res: Response, next: NextFunction) {
+    await this.restrictComment.execute(req, res, next);
   }
 }

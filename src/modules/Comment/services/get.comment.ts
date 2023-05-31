@@ -2,15 +2,12 @@ import { injectable } from "tsyringe";
 import CommentRepository from "../repository/comment.repository";
 import Http from "../../../common/utils/http.utils";
 import Service from "../../../common/interface/service.interface";
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 
 @injectable()
-export default class GetCommentService implements Service<Request, Response> {
-  constructor(
-    private commentRepository: CommentRepository,
-    private http: Http
-  ) {}
-  async execute(req: Request, res: Response) {
+export default class GetCommentService implements Service<Request, Response, NextFunction> {
+  constructor(private commentRepository: CommentRepository, private http: Http) {}
+  async execute(req: Request, res: Response, next: NextFunction) {
     try {
       const { id } = req.params;
 
@@ -23,13 +20,8 @@ export default class GetCommentService implements Service<Request, Response> {
         message: "all comments have been retrieved",
         data,
       });
-    } catch (erro: any) {
-      this.http.Response({
-        res,
-        status: "error",
-        statuscode: 503,
-        message: "Failed to retrieve comments",
-      });
+    } catch (error) {
+      return next(error);
     }
   }
 }

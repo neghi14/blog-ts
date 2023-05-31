@@ -1,18 +1,13 @@
 import { injectable } from "tsyringe";
 import Service from "../../../common/interface/service.interface";
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import UserRepository from "../repositories/user.repository";
 import Http from "../../../common/utils/http.utils";
 
 @injectable()
-export default class DeleteUserService
-  implements Service<Request, Response>
-{
-  constructor(
-    private userRepository: UserRepository,
-    private http: Http
-  ) {}
-  async execute(req: Request, res: Response) {
+export default class DeleteUserService implements Service<Request, Response, NextFunction> {
+  constructor(private userRepository: UserRepository, private http: Http) {}
+  async execute(req: Request, res: Response, next: NextFunction) {
     try {
       const { id } = req.params;
       await this.userRepository.deleteUser({ _id: id });
@@ -23,13 +18,8 @@ export default class DeleteUserService
         statuscode: 204,
         message: "User successfully removed from database",
       });
-    } catch (error: any) {
-      this.http.Response({
-        res,
-        status: "error",
-        statuscode: 500,
-        message: error.message,
-      });
+    } catch (error) {
+      return next(error);
     }
   }
 }

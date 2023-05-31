@@ -1,18 +1,15 @@
 import { injectable } from "tsyringe";
 import Http from "../../../common/utils/http.utils";
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import { Blog } from "../../../common/database/model";
 import BlogRepository from "../repository/blog.repository";
 import Service from "../../../common/interface/service.interface";
 import { slugTitle } from "../../../common/utils/slug.utils";
 
 @injectable()
-export default class AddBlogService implements Service<Request, Response> {
-  constructor(
-    private blogRepository: BlogRepository,
-    private http: Http
-  ) {}
-  async execute(req: Request, res: Response) {
+export default class AddBlogService implements Service<Request, Response, NextFunction> {
+  constructor(private blogRepository: BlogRepository, private http: Http) {}
+  async execute(req: Request, res: Response, next: NextFunction) {
     try {
       const { author, title, content } = req.body;
       const newBlogPayload: Blog = {
@@ -31,13 +28,8 @@ export default class AddBlogService implements Service<Request, Response> {
         message: "Blog has been created successfully",
         data,
       });
-    } catch (error: any) {
-      this.http.Response({
-        res,
-        statuscode: 503,
-        status: "error",
-        message: error.message,
-      });
+    } catch (error) {
+      return next(error);
     }
   }
 }

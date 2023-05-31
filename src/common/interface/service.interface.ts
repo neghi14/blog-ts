@@ -1,3 +1,3 @@
-export default interface Service<Request, Response> {
-  execute(req: Request, res: Response): Promise<void>;
+export default interface Service<Request, Response, NextFunction> {
+  execute(req: Request, res: Response, next: NextFunction): Promise<void>;
 }

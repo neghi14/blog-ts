@@ -1,22 +1,23 @@
 import { injectable } from "tsyringe";
 import Service from "../../../../common/interface/service.interface";
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import UserRepository from "../../../User/repositories/user.repository";
 import Http from "../../../../common/utils/http.utils";
 import { createHash } from "../../../../common/utils/bcryptjs.utils";
 import { User } from "../../../../common/database/model";
+import ErrorUtility from "../../../../common/utils/error.utils";
 
 @injectable()
-export default class ChangePasswordService implements Service<Request, Response> {
+export default class ChangePasswordService implements Service<Request, Response, NextFunction> {
   constructor(private userRepository: UserRepository, private http: Http) {}
-  async execute(req: Request, res: Response) {
+  async execute(req: Request, res: Response, next: NextFunction) {
     try {
       const { id } = req.params;
 
       const { password, confirm_password } = req.body;
 
       if (password !== confirm_password) {
-        console.log("error");
+        return next(new ErrorUtility("Passwords Don't match", 400));
       }
 
       const hashPassword = await createHash(password);
@@ -35,13 +36,8 @@ export default class ChangePasswordService implements Service<Request, Response>
         message: "Successfully Updated password",
         data,
       });
-    } catch (error: any) {
-      this.http.Response({
-        res,
-        status: "error",
-        statuscode: 500,
-        message: error.message,
-      });
+    } catch (error) {
+      return next(error);
     }
   }
 }

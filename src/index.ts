@@ -12,26 +12,16 @@ app.use(express.json());
 app.use(morgan("tiny"));
 app.use(cookieParser());
 
-app.use(
-  (
-    req: express.Request,
-    res: express.Response,
-    next: express.NextFunction
-  ) => {
-    res.setHeader("Access-Control-Allow-Origin", "*");
-    res.setHeader(
-      "Access-Control-Allow-Headers",
-      "Origin, X-Requested-With, Content-Type, Accept, Authorization,"
-    );
-    res.setHeader(
-      "Access-Control-Allow-Methods",
-      "GET, POST, PATCH, DELETE, OPTIONS"
-    );
-    next();
-  }
-);
+app.use((req: express.Request, res: express.Response, next: express.NextFunction) => {
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization,");
+  res.setHeader("Access-Control-Allow-Methods", "GET, POST, PATCH, DELETE, OPTIONS");
+  next();
+});
 
 new Routes(app).routes();
 
 const server = new Server(app);
 server.start();
+
+export default app;

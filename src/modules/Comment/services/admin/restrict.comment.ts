@@ -1,17 +1,14 @@
 import CommentRepository from "../../repository/comment.repository";
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import { injectable } from "tsyringe";
 import Service from "../../../../common/interface/service.interface";
 import Http from "../../../../common/utils/http.utils";
 import { Comment } from "../../../../common/database/model";
 
 @injectable()
-export default class RestrictComment implements Service<Request, Response> {
-  constructor(
-    private commentRepository: CommentRepository,
-    private http: Http
-  ) {}
-  async execute(req: Request, res: Response) {
+export default class RestrictComment implements Service<Request, Response, NextFunction> {
+  constructor(private commentRepository: CommentRepository, private http: Http) {}
+  async execute(req: Request, res: Response, next: NextFunction) {
     try {
       const { id } = req.params;
 
@@ -22,10 +19,7 @@ export default class RestrictComment implements Service<Request, Response> {
         updated_at: new Date(),
       };
 
-      const data = await this.commentRepository.updateComment(
-        { _id: id },
-        restrictComment
-      );
+      const data = await this.commentRepository.updateComment({ _id: id }, restrictComment);
 
       this.http.Response({
         res,
@@ -34,13 +28,8 @@ export default class RestrictComment implements Service<Request, Response> {
         message: "Comment has been restricted",
         data,
       });
-    } catch (error: any) {
-      this.http.Response({
-        res,
-        status: "error",
-        statuscode: 503,
-        message: error.message,
-      });
+    } catch (error) {
+      return next(error);
     }
   }
 }

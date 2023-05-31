@@ -1,19 +1,19 @@
 import { injectable } from "tsyringe";
 import Service from "../../../common/interface/service.interface";
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import BlogRepository from "../repository/blog.repository";
 import CommentRepository from "../../Comment/repository/comment.repository";
 import Http from "../../../common/utils/http.utils";
 import { Comment } from "../../../common/database/model";
 
 @injectable()
-export default class AddBlogCommentService implements Service<Request, Response> {
+export default class AddBlogCommentService implements Service<Request, Response, NextFunction> {
   constructor(
     private blogRepository: BlogRepository,
     private commentRepository: CommentRepository,
     private http: Http
   ) {}
-  async execute(req: Request, res: Response) {
+  async execute(req: Request, res: Response, next: NextFunction) {
     try {
       const { slug } = req.params;
 
@@ -36,13 +36,8 @@ export default class AddBlogCommentService implements Service<Request, Response>
         message: "Comment Successfully Added",
         data,
       });
-    } catch (error: any) {
-      this.http.Response({
-        res,
-        status: "error",
-        statuscode: 500,
-        message: error.message,
-      });
+    } catch (error) {
+      return next(error);
     }
   }
 }

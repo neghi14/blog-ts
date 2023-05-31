@@ -1,5 +1,5 @@
 import { injectable } from "tsyringe";
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import Http from "../../../common/utils/http.utils";
 import AddBlogService from "../services/add.blog";
 import GetBlogService from "../services/get.blog";
@@ -17,19 +17,19 @@ export default class BlogController {
     private removeBlog: DeleteBlogService
   ) {}
 
-  async getAll(req: Request, res: Response) {
-    await this.getBlogs.execute(req, res);
+  async getAll(req: Request, res: Response, next: NextFunction) {
+    await this.getBlogs.execute(req, res, next);
   }
-  async getOne(req: Request, res: Response) {
-    await this.getBlog.execute(req, res);
+  async getOne(req: Request, res: Response, next: NextFunction) {
+    await this.getBlog.execute(req, res, next);
   }
-  async postBlog(req: Request, res: Response) {
-    await this.addBlog.execute(req, res);
+  async postBlog(req: Request, res: Response, next: NextFunction) {
+    await this.addBlog.execute(req, res, next);
   }
-  async patchBlog(req: Request, res: Response) {
-    await this.editBlog.execute(req, res);
+  async patchBlog(req: Request, res: Response, next: NextFunction) {
+    await this.editBlog.execute(req, res, next);
   }
-  async deleteBlog(req: Request, res: Response) {
-    await this.removeBlog.execute(req, res);
+  async deleteBlog(req: Request, res: Response, next: NextFunction) {
+    await this.removeBlog.execute(req, res, next);
   }
 }

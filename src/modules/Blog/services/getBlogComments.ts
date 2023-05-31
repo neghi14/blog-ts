@@ -1,19 +1,19 @@
 import { injectable } from "tsyringe";
 import Service from "../../../common/interface/service.interface";
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import BlogRepository from "../repository/blog.repository";
 import CommentRepository from "../../Comment/repository/comment.repository";
 import Http from "../../../common/utils/http.utils";
 
 @injectable()
-export default class GetBlogCommentService implements Service<Request, Response> {
+export default class GetBlogCommentService implements Service<Request, Response, NextFunction> {
   constructor(
     private blogRepository: BlogRepository,
     private commentRepository: CommentRepository,
     private http: Http
   ) {}
 
-  async execute(req: Request, res: Response) {
+  async execute(req: Request, res: Response, next: NextFunction) {
     try {
       const { slug } = req.params;
 
@@ -32,16 +32,11 @@ export default class GetBlogCommentService implements Service<Request, Response>
         res,
         status: "success",
         statuscode: 200,
-        message: "All Coments fro this post has been retrieved",
+        message: "All Coments from this post has been retrieved",
         data,
       });
-    } catch (error: any) {
-      this.http.Response({
-        res,
-        status: "error",
-        statuscode: 500,
-        message: error.message,
-      });
+    } catch (error) {
+      return next(error);
     }
   }
 }

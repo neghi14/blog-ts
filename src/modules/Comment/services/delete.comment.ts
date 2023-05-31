@@ -1,13 +1,13 @@
 import { injectable } from "tsyringe";
 import Service from "../../../common/interface/service.interface";
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import CommentRepository from "../repository/comment.repository";
 import Http from "../../../common/utils/http.utils";
 
 @injectable()
-export default class DeleteCommentService implements Service<Request, Response> {
+export default class DeleteCommentService implements Service<Request, Response, NextFunction> {
   constructor(private commentRepository: CommentRepository, private http: Http) {}
-  async execute(req: Request, res: Response) {
+  async execute(req: Request, res: Response, next: NextFunction) {
     try {
       const { id } = req.params;
 
@@ -19,13 +19,8 @@ export default class DeleteCommentService implements Service<Request, Response> 
         statuscode: 204,
         message: "Comment has been deleted",
       });
-    } catch (error: any) {
-      this.http.Response({
-        res,
-        status: "error",
-        statuscode: 500,
-        message: error.message,
-      });
+    } catch (error) {
+      return next(error);
     }
   }
 }
