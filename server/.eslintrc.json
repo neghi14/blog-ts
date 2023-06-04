@@ -13,7 +13,6 @@
   "plugins": ["@typescript-eslint"],
   "rules": {
     "no-console": "warn",
-    "semi": ["error", "always"],
     "no-duplicate-imports": "error"
   }
 }
