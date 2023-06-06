@@ -1,6 +1,6 @@
 import { injectable } from "tsyringe";
-import AddBlogCommentService from "../services/addBlogComment";
-import GetBlogCommentService from "../services/getBlogComments";
+import AddBlogCommentService from "../../services/comment/add.comment";
+import GetBlogCommentService from "../../services/comment/get.comments";
 import { NextFunction, Request, Response } from "express";
 
 @injectable()

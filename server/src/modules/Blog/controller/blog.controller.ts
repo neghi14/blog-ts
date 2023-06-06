@@ -4,7 +4,7 @@ import Http from "../../../common/utils/http.utils";
 import AddBlogService from "../services/add.blog";
 import GetBlogService from "../services/get.blog";
 import GetBlogsService from "../services/get.blogs";
-import DeleteBlogService from "../services/admin/delete.blog";
+import DeleteBlogService from "../services/delete.blog";
 import EditBlogService from "../services/edit.blog";
 
 @injectable()

@@ -23,15 +23,16 @@ export default class AddUserService implements Service<Request, Response, NextFu
         phone,
       };
 
-      const data = await this.userRepository.createUser(newUserPayload);
+      const data = await this.userRepository.createOne(newUserPayload);
+      
       this.http.Response({
         res,
         status: "success",
         statuscode: 201,
-        message: "User successfully created",
+        message: "User Created!",
         data,
       });
-    } catch (error: any) {
+    } catch (error) {
       return next(error);
     }
   }

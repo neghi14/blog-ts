@@ -1,9 +1,8 @@
-import { Document, FilterQuery, Model } from "mongoose";
-
 export default interface CRUD {
-  readOne(model: Model<Document>, params: FilterQuery<string>): Promise<unknown>;
-  readAll(model: Model<Document>, query: FilterQuery<object>): Promise<unknown>;
-  createOne(model: Model<Document>, payload: Document): Promise<unknown>;
-  updateOne(model: Model<Document>, params: FilterQuery<string>, payload: Document): Promise<unknown>;
-  deleteOne(model: Model<Document>, params: FilterQuery<string>): Promise<unknown>;
+  readOne(params: object): Promise<unknown>;
+  readAll(query: Record<string, any>): Promise<unknown>;
+  createOne(payload: object): Promise<unknown>;
+  updateOne(params: string, payload: object): Promise<unknown>;
+  deleteOne(params: string): Promise<unknown>;
+  countAll(): Promise<unknown>;
 }

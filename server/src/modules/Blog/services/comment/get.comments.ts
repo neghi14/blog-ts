@@ -1,9 +1,9 @@
 import { injectable } from "tsyringe";
-import Service from "../../../common/interface/service.interface";
+import Service from "../../../../common/interface/service.interface";
 import { NextFunction, Request, Response } from "express";
-import BlogRepository from "../repository/blog.repository";
-import CommentRepository from "../../Comment/repository/comment.repository";
-import Http from "../../../common/utils/http.utils";
+import BlogRepository from "../../repository/blog.repository";
+import CommentRepository from "../../../Comment/repository/comment.repository";
+import Http from "../../../../common/utils/http.utils";
 
 @injectable()
 export default class GetBlogCommentService implements Service<Request, Response, NextFunction> {

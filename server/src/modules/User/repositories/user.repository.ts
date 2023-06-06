@@ -1,22 +1,50 @@
 import { injectable } from "tsyringe";
-import { createData, updateData, deleteData, readAllData, readSingleData } from "../../../common/utils/database.utils";
+import { readOne, readAll, createOne, updateOne, deleteOne, countAll } from "../../../common/utils/database.utils";
 import userSchema from "../../../common/database/schema/user.schema";
+import CRUD from "../../../common/interface/crud.interface";
 
 @injectable()
-export default class UserRepository {
-  async readAllUser() {
-    return await readAllData(userSchema);
+export default class UserRepository implements CRUD {
+  async readOne(params: object): Promise<unknown> {
+    try {
+      return await readOne(userSchema, params);
+    } catch (error) {
+      return error;
+    }
   }
-  async readSingleUser(data: Record<string, string | number>) {
-    return await readSingleData(userSchema, data);
+  async readAll(query: object): Promise<unknown> {
+    try {
+      return await readAll(userSchema, query);
+    } catch (error) {
+      return error;
+    }
   }
-  async updateUser(data: Record<string, string | number>, payload: Record<string, string | number>) {
-    return await updateData(userSchema, data, payload);
+  async createOne(payload: any): Promise<unknown> {
+    try {
+      return await createOne(userSchema, payload);
+    } catch (error) {
+      return error;
+    }
   }
-  async createUser(data: Record<string, string | number>) {
-    return await createData(userSchema, data);
+  async updateOne(params: string, payload: object): Promise<unknown> {
+    try {
+      return await updateOne(userSchema, params, payload);
+    } catch (error) {
+      return error;
+    }
   }
-  async deleteUser(data: Record<string, string | number>) {
-    return await deleteData(userSchema, data);
+  async deleteOne(params: string): Promise<unknown> {
+    try {
+      return await deleteOne(userSchema, params);
+    } catch (error) {
+      return error;
+    }
+  }
+  async countAll(): Promise<unknown> {
+    try {
+      return await countAll(userSchema);
+    } catch (error) {
+      return error;
+    }
   }
 }

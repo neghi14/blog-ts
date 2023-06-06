@@ -12,7 +12,7 @@ export default class GetUserService implements Service<Request, Response, NextFu
     try {
       const { id } = req.params;
 
-      const data = await this.userRepository.readSingleUser({ _id: id });
+      const data = await this.userRepository.readOne({ _id: id });
 
       if (!data) {
         return next(new ErrorUtility("User not Found", 404));
@@ -22,7 +22,7 @@ export default class GetUserService implements Service<Request, Response, NextFu
         res,
         status: "success",
         statuscode: 200,
-        message: "User successfully retrieved",
+        message: "User Retrieved!",
         data,
       });
     } catch (error) {

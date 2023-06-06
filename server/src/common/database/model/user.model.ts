@@ -7,4 +7,10 @@ export interface User extends Base {
   email?: string;
   phone?: number;
   is_active?: boolean;
+  role?: Role | string;
+}
+
+enum Role {
+  ADMIN,
+  USER,
 }
