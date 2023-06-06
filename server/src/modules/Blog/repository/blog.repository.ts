@@ -1,22 +1,26 @@
-import { readSingleData, readAllData, createData, updateData, deleteData } from "../../../common/utils/database.utils";
+import { readOne, readAll, createOne, updateOne, deleteOne, countAll } from "../../../common/utils/database.utils";
 import blogSchema from "../../../common/database/schema/blog.schema";
 import { injectable } from "tsyringe";
+import CRUD from "../../../common/interface/crud.interface";
 
 @injectable()
-export default class BlogRepository {
-  async readSingleBlog(data: Record<string, string | number>) {
-    return await readSingleData(blogSchema, data);
+export default class BlogRepository implements CRUD {
+  async readOne(params: object): Promise<unknown> {
+    return await readOne(blogSchema, params);
   }
-  async readAllBlog(options?: Record<string, string | number>) {
-    return await readAllData(blogSchema, options);
+  async readAll(query: Record<string, any>): Promise<unknown> {
+    return await readAll(blogSchema, query);
   }
-  async createBlog(data: Record<string, string | number>) {
-    return await createData(blogSchema, data);
+  async createOne(payload: object): Promise<unknown> {
+    return await createOne(blogSchema, payload);
   }
-  async updateBlog(data: Record<string, string | number>, payload: Record<string, string | number>) {
-    return await updateData(blogSchema, data, payload);
+  async updateOne(params: string, payload: object): Promise<unknown> {
+    return await updateOne(blogSchema, params, payload);
   }
-  async deleteBlog(data: Record<string, string | number>) {
-    return await deleteData(blogSchema, data);
+  async deleteOne(params: string): Promise<unknown> {
+    return await deleteOne(blogSchema, params);
+  }
+  async countAll(): Promise<unknown> {
+    return await countAll(blogSchema);
   }
 }

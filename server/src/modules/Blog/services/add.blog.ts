@@ -19,13 +19,13 @@ export default class AddBlogService implements Service<Request, Response, NextFu
         content,
       };
 
-      const data = await this.blogRepository.createBlog(newBlogPayload);
+      const data = await this.blogRepository.createOne(newBlogPayload);
 
       this.http.Response({
         res,
         statuscode: 201,
         status: "success",
-        message: "Blog has been created successfully",
+        message: "Blog Created!",
         data,
       });
     } catch (error) {

@@ -11,11 +11,10 @@ export default class GetBlogService implements Service<Request, Response, NextFu
   async execute(req: Request, res: Response, next: NextFunction) {
     try {
       const { id } = req.params;
-      const data = await this.blogRepository.readSingleBlog({ _id: id });
+      const data = await this.blogRepository.readOne({ _id: id });
 
-      if (!data) {
-        return next(new ErrorUtility("Blogpost not Found", 404));
-      }
+      if (!data)  return next(new ErrorUtility("Blogpost not Found", 404));
+      
 
       this.http.Response({
         res,

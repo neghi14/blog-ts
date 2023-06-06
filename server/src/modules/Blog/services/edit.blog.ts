@@ -4,6 +4,7 @@ import { NextFunction, Request, Response } from "express";
 import BlogRepository from "../repository/blog.repository";
 import Http from "../../../common/utils/http.utils";
 import { Blog } from "../../../common/database/model";
+import ErrorUtility from "../../../common/helpers/error.helper";
 
 @injectable()
 export default class EditBlogService implements Service<Request, Response, NextFunction> {
@@ -19,13 +20,14 @@ export default class EditBlogService implements Service<Request, Response, NextF
         updated_at: new Date(),
       };
       const { id } = req.params;
-      const data = await this.blogRepository.updateBlog({ _id: id }, newBlogPayload);
+      const data = await this.blogRepository.updateOne(id, newBlogPayload);
+      if (!data) return next(new ErrorUtility("Blog not Found!", 404));
 
       this.http.Response({
         res,
         status: "success",
         statuscode: 201,
-        message: "Blog data has been updated",
+        message: "Blog Updated!",
         data,
       });
     } catch (error) {

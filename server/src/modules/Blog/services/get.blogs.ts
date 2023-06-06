@@ -9,13 +9,21 @@ export default class GetBlogsService implements Service<Request, Response, NextF
   constructor(private blogRepository: BlogRepository, private http: Http) {}
   async execute(req: Request, res: Response, next: NextFunction) {
     try {
-      const data = await this.blogRepository.readAllBlog();
+      const blogs: any = await this.blogRepository.readAll(req.query);
+
+      const data = {
+        page: Number(req.query.skip) * 1 || 1,
+        limit: Number(req.query.limit) || 10,
+        length: blogs.length,
+        doc_length: await this.blogRepository.countAll(),
+        blogs,
+      };
 
       this.http.Response({
         res,
         statuscode: 200,
         status: "success",
-        message: "Blog has been retrieved",
+        message: "Blogs Retrieved!",
         data,
       });
     } catch (error) {

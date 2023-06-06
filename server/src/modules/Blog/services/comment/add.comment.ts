@@ -19,7 +19,7 @@ export default class AddBlogCommentService implements Service<Request, Response,
 
       const { body, user } = req.body;
 
-      const blog = await this.blogRepository.readSingleBlog({ slug });
+      const blog: any = await this.blogRepository.readOne({ slug });
 
       const newCommentpayload: Comment = {
         author: user.toString(),
