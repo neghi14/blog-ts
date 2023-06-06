@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response, Router } from "express";
 import BlogController from "../controller/blog.controller";
 import { container } from "tsyringe";
-import BlogCommentController from "../controller/blogComment.controller";
+import BlogCommentController from "../controller/comment/comment.controller";
 import { isLoggedIn } from "../../Auth/middleware";
 
 const blogRouter: Router = Router();

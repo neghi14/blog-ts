@@ -1,21 +1,22 @@
-import { Model, FilterQuery, Document } from "mongoose";
+import { Model } from "mongoose";
 
-const readOne = async (model: Model<Document>, params: FilterQuery<object>) => {
+const readOne = async (model: Model<any>, params: object) => {
   try {
     return await model.findOne(params);
-  } catch (error) {
-    return error;
+  } catch (error: any) {
+    error.message;
   }
 };
 
-const readAll = async (model: Model<Document>, query: FilterQuery<object>) => {
+const readAll = async (model: Model<any>, query: Record<string, any>) => {
   try {
+    const filterObj = { ...query };
     const queryObj = { ...query };
     const queryDelete = ["sort", "limit", "skip"];
-    const queryFilter = queryDelete.map((el) => delete queryObj[el]);
+    queryDelete.map((el) => delete filterObj[el]);
 
     //FILTER
-    let queryStr = JSON.stringify(queryFilter);
+    let queryStr = JSON.stringify(filterObj);
     queryStr = queryStr.replace(/\b(gte|gt|lte|lt)\b/g, (match) => `$${match}`);
 
     //SORT
@@ -23,43 +24,50 @@ const readAll = async (model: Model<Document>, query: FilterQuery<object>) => {
     if (queryObj.sort) {
       sort = queryObj.sort.split(",").join(" ");
     } else {
-      sort = "createdAt";
+      sort = "created_at";
     }
 
     //PAGINATION
+    const skip = queryObj.skip * 1 || 1;
+    const limit = query.limit * 1 || 10;
+    const page = (skip - 1) * limit;
 
-    const page = queryObj.page * 1 || 1;
-    const limit = query.limit || 10;
-    const skip = (page - 1) * limit;
-
-    return await model.find(JSON.parse(queryStr)).sort(sort).limit(limit).skip(skip);
-  } catch (error) {
-    return error;
+    return await model.find(JSON.parse(queryStr)).sort(sort).skip(page).limit(limit);
+  } catch (error: any) {
+    error.message;
   }
 };
 
-const createOne = async (model: Model<Document>, payload: Document) => {
+const createOne = async (model: Model<any>, payload: object) => {
   try {
     return await model.create(payload);
-  } catch (error) {
-    return error;
+  } catch (error: any) {
+    error.message;
   }
 };
 
-const updateOne = async (model: Model<Document>, params: Document<string>, payload: Document) => {
+const updateOne = async (model: Model<any>, params: string, payload: object) => {
   try {
     return await model.findByIdAndUpdate(params, payload, { new: true });
-  } catch (error) {
-    return error;
+  } catch (error: any) {
+    error.message;
   }
 };
 
-const deleteOne = async (model: Model<Document>, params: Document) => {
+const deleteOne = async (model: Model<any>, params: string) => {
   try {
     return await model.findByIdAndRemove(params);
-  } catch (error) {
-    return error;
+  } catch (error: any) {
+    error.message;
   }
 };
 
-export default { readOne, readAll, createOne, updateOne, deleteOne };
+const countAll = async (model: Model<any>) => {
+  try {
+    return await model.countDocuments();
+  } catch (error: any) {
+    error.message;
+  }
+};
+
+export { readOne, readAll, createOne, updateOne, deleteOne, countAll };

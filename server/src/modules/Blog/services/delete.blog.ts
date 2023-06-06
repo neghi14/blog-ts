@@ -1,9 +1,9 @@
 import { NextFunction, Request, Response } from "express";
-import Service from "../../../../common/interface/service.interface";
-import Http from "../../../../common/utils/http.utils";
-import BlogRepository from "../../repository/blog.repository";
+import Service from "../../../common/interface/service.interface";
+import Http from "../../../common/utils/http.utils";
+import BlogRepository from "../repository/blog.repository";
 import { injectable } from "tsyringe";
-import ErrorUtility from "../../../../common/helpers/error.helper";
+import ErrorUtility from "../../../common/helpers/error.helper";
 
 @injectable()
 export default class DeleteBlogService implements Service<Request, Response, NextFunction> {

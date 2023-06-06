@@ -5,6 +5,7 @@ import UserRepository from "../repositories/user.repository";
 import Http from "../../../common/utils/http.utils";
 import { createHash } from "../../../common/utils/bcryptjs.utils";
 import { User } from "../../../common/database/model";
+import ErrorUtility from "../../../common/helpers/error.helper";
 
 @injectable()
 export default class EditUserService implements Service<Request, Response, NextFunction> {
@@ -13,7 +14,7 @@ export default class EditUserService implements Service<Request, Response, NextF
     try {
       const { id } = req.params;
 
-      const { username, name, email, is_active, password } = req.body;
+      const { username, name, email, is_active, password, role } = req.body;
 
       const hashedPassword = await createHash(password);
 
@@ -22,17 +23,20 @@ export default class EditUserService implements Service<Request, Response, NextF
         name,
         email,
         is_active,
+        role,
         password: hashedPassword,
         updated_at: new Date(),
       };
 
-      const data = await this.userRepository.updateUser({ _id: id }, newUserPayload);
+      const data = await this.userRepository.updateOne(id, newUserPayload);
+
+      if (!data) return next(new ErrorUtility("User not Found!", 404));
 
       this.http.Response({
         res,
         status: "success",
         statuscode: 201,
-        message: "User data has been updated",
+        message: "User Updated!",
         data,
       });
     } catch (error) {

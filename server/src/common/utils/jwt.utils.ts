@@ -2,7 +2,7 @@ import jwt from "jsonwebtoken";
 import config from "config";
 
 const pub_key = Buffer.from(config.get<string>("pub_key"), "base64").toString("ascii");
-const pri_key = Buffer.from(config.get<string>("pri_key"), "base64").toString("ascii");
+const pri_key = Buffer.from(config.get<string>("priv_key"), "base64").toString("ascii");
 
 export const createToken = (data: object, options: jwt.SignOptions): string => {
   return jwt.sign(data, pri_key, {

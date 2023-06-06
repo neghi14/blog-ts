@@ -27,6 +27,11 @@ const UserSchema: Schema = new Schema<User>({
     type: Boolean,
     default: true,
   },
+  role: {
+    type: String,
+    enum: ["ADMIN", "USER"],
+    default: "USER",
+  },
   created_at: {
     type: Date,
     default: Date.now,

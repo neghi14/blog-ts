@@ -6,13 +6,15 @@ const userRouter: Router = Router();
 
 const userController = container.resolve(UserController);
 
-userRouter.get("/all", (req: Request, res: Response, next: NextFunction) => userController.getAllUser(req, res, next));
+userRouter.get("/all", (req: Request, res: Response, next: NextFunction) => userController.readAll(req, res, next));
 
-userRouter.post("/", (req: Request, res: Response, next: NextFunction) => userController.postUser(req, res, next));
+userRouter.post("/", (req: Request, res: Response, next: NextFunction) => userController.createOne(req, res, next));
 
 userRouter
-  .get("/:id", (req: Request, res: Response, next: NextFunction) => userController.getSingleUser(req, res, next))
-  .patch("/:id", (req: Request, res: Response, next: NextFunction) => userController.patchUser(req, res, next))
-  .delete("/:id", (req: Request, res: Response, next: NextFunction) => userController.deleteUser(req, res, next));
+  .get("/:id", (req: Request, res: Response, next: NextFunction) => userController.readOne(req, res, next))
+  .patch("/:id", (req: Request, res: Response, next: NextFunction) => userController.updateOne(req, res, next))
+  .delete("/:id", (req: Request<{ id: string }>, res: Response, next: NextFunction) =>
+    userController.deleteOne(req, res, next)
+  );
 
 export default userRouter;
