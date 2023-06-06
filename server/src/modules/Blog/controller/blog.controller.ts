@@ -6,9 +6,10 @@ import GetBlogService from "../services/get.blog";
 import GetBlogsService from "../services/get.blogs";
 import DeleteBlogService from "../services/delete.blog";
 import EditBlogService from "../services/edit.blog";
+import CONTROLLER from "../../../common/interface/controller.interface";
 
 @injectable()
-export default class BlogController {
+export default class BlogController implements CONTROLLER<Request, Response, NextFunction> {
   constructor(
     private addBlog: AddBlogService,
     private getBlog: GetBlogService,
@@ -17,19 +18,19 @@ export default class BlogController {
     private removeBlog: DeleteBlogService
   ) {}
 
-  async getAll(req: Request, res: Response, next: NextFunction) {
+  async readAll(req: Request, res: Response, next: NextFunction) {
     await this.getBlogs.execute(req, res, next);
   }
-  async getOne(req: Request, res: Response, next: NextFunction) {
+  async readOne(req: Request, res: Response, next: NextFunction) {
     await this.getBlog.execute(req, res, next);
   }
-  async postBlog(req: Request, res: Response, next: NextFunction) {
+  async createOne(req: Request, res: Response, next: NextFunction) {
     await this.addBlog.execute(req, res, next);
   }
-  async patchBlog(req: Request, res: Response, next: NextFunction) {
+  async updateOne(req: Request, res: Response, next: NextFunction) {
     await this.editBlog.execute(req, res, next);
   }
-  async deleteBlog(req: Request, res: Response, next: NextFunction) {
+  async deleteOne(req: Request, res: Response, next: NextFunction) {
     await this.removeBlog.execute(req, res, next);
   }
 }

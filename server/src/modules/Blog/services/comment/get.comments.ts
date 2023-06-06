@@ -17,7 +17,7 @@ export default class GetBlogCommentService implements Service<Request, Response,
     try {
       const { slug } = req.params;
 
-      const blog = await this.blogRepository.readSingleBlog({ slug });
+      const blog: any = await this.blogRepository.readOne({ slug });
 
       const comments = await this.commentRepository.readAllComment({
         post: blog._id,
