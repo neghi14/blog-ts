@@ -1,22 +1,28 @@
-import { readAllData, readSingleData, createData, updateData, deleteData } from "../../../common/utils/database.utils";
+import { readAll, readOne, createOne, updateOne, deleteOne, countAll } from "../../../common/utils/database.utils";
 import { injectable } from "tsyringe";
 import commentSchema from "../../../common/database/schema/comment.schema";
+import CRUD from "../../../common/interface/crud.interface";
+import DatabaseQueryHelper from "../../../common/helpers/database.helper";
 
 @injectable()
-export default class CommentRepository {
-  async readSingleComment(data: Record<string, string | number>) {
-    return await readSingleData(commentSchema, data);
+export default class CommentRepository implements CRUD {
+  constructor(private databaseQueryHelper: DatabaseQueryHelper) {}
+  async readOne(params: object): Promise<unknown> {
+    return await this.databaseQueryHelper.readOne(commentSchema, params);
   }
-  async readAllComment(options?: Record<string, string | number>) {
-    return await readAllData(commentSchema, options);
+  async readAll(query: Record<string, any>): Promise<unknown> {
+    return await this.databaseQueryHelper.readAll(commentSchema, query);
   }
-  async createComment(data: Record<string, string | number>) {
-    return await createData(commentSchema, data);
+  async createOne(payload: object): Promise<unknown> {
+    return this.databaseQueryHelper.createOne(commentSchema, payload);
   }
-  async updateComment(data: Record<string, string | number>, payload: Record<string, string | number>) {
-    return await updateData(commentSchema, data, payload);
+  async updateOne(params: string, payload: object): Promise<unknown> {
+    return await this.databaseQueryHelper.updateOne(commentSchema, params, payload);
   }
-  async deleteComment(data: Record<string, string | number>) {
-    return await deleteData(commentSchema, data);
+  async deleteOne(params: string): Promise<unknown> {
+    return await this.databaseQueryHelper.deleteOne(commentSchema, params);
+  }
+  async countAll(): Promise<unknown> {
+    return await this.databaseQueryHelper.countAll(commentSchema);
   }
 }

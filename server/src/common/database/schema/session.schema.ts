@@ -5,10 +5,11 @@ const SessionSchema: Schema = new Schema<Session>({
   user: {
     type: Schema.Types.ObjectId,
     ref: "Users",
+    required: true,
   },
   refresh_token: String,
   session_token: String,
-  userAgent: String,
+  user_agent: String,
   user_ip: String,
   is_valid: Boolean,
   created_at: {

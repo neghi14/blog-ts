@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response, Application } from "express";
 
 // import blogRouter from "../../modules/Blog/routes/blog.routes";
-// import commentRouter from "../../modules/Comment/routes/comment.routes";
+import commentRouter from "../../modules/Comment/routes/comment.routes";
 import userRouter from "../../modules/User/routes/user.routes";
 // import adminRouter from "../../modules/Auth/routes/admin.routes";
 // import userAuthRouter from "../../modules/Auth/routes/auth.routes";
@@ -22,7 +22,7 @@ export class Routes {
       res.sendStatus(200);
     });
     //this.app.use(`/api/v1/blog`, blogRouter);
-    //this.app.use(`/api/v1/comment`, commentRouter);
+    this.app.use(`/api/v1/comment`, commentRouter);
     this.app.use(`/api/v1/user`, userRouter);
     this.app.use("/api/v1/sessions", sessionRoute);
 

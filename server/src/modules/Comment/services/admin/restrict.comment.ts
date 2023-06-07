@@ -19,13 +19,13 @@ export default class RestrictComment implements Service<Request, Response, NextF
         updated_at: new Date(),
       };
 
-      const data = await this.commentRepository.updateComment({ _id: id }, restrictComment);
+      const data = await this.commentRepository.updateOne(id, restrictComment);
 
       this.http.Response({
         res,
         status: "success",
         statuscode: 201,
-        message: "Comment has been restricted",
+        message: "Comment Restricted!",
         data,
       });
     } catch (error) {

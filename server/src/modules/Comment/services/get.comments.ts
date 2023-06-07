@@ -9,13 +9,13 @@ export default class GetCommentsService implements Service<Request, Response, Ne
   constructor(private commentRepository: CommentRepository, private http: Http) {}
   async execute(req: Request, res: Response, next: NextFunction) {
     try {
-      const data = await this.commentRepository.readAllComment();
+      const data = await this.commentRepository.readAll(req.query);
 
       this.http.Response({
         res,
         status: "success",
         statuscode: 200,
-        message: "All comments have been retrieved",
+        message: "Comments Retrieved",
         data,
       });
     } catch (error) {
