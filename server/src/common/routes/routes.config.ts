@@ -9,6 +9,7 @@ import ErrorInterface from "../interface/error.interface";
 import sessionRoute from "../../modules/Session/routes/session.routes";
 import Http from "../utils/http.utils";
 import authRoute from "../../modules/User/routes/auth/auth.routes";
+import likeRoute from "../../modules/Likes/routes/like.routes";
 
 export class Routes {
   app: Application;
@@ -25,6 +26,7 @@ export class Routes {
     this.app.use(`/api/v1/comment`, commentRouter);
     this.app.use(`/api/v1/user`, userRouter);
     this.app.use("/api/v1/sessions", sessionRoute);
+    this.app.use("/api/v1/like", likeRoute);
 
     //AUTH ENDPOINT
     this.app.use("/api/v1/auth", authRoute);
