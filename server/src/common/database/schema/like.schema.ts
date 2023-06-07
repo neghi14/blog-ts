@@ -2,11 +2,11 @@ import { Schema, model } from "mongoose";
 import { Like } from "../model";
 
 const LikeSchema: Schema = new Schema<Like>({
-  name: {
+  liked_by: {
     type: Schema.Types.ObjectId,
     ref: "Users",
   },
-  post: {
+  liked_post: {
     type: Schema.Types.ObjectId,
     ref: "Blogs",
   },

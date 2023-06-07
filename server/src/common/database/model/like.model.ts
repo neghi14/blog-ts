@@ -1,6 +1,6 @@
 import { Base } from "./base.model";
 
 export interface Like extends Base {
-  name?: string,
-  post?: string,
+  liked_by?: string;
+  liked_post?: string;
 }
