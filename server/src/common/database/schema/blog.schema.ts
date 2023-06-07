@@ -15,12 +15,13 @@ const BlogSchema: Schema = new Schema<Blog>({
     required: true,
   },
   slug: {
-    type: String, 
+    type: String,
     unique: true,
   },
   author: {
     type: Schema.Types.ObjectId,
     ref: "Users",
+    required: true,
   },
   created_at: {
     type: Date,

@@ -18,13 +18,13 @@ export default class EditCommentService implements Service<Request, Response, Ne
         body,
         updated_at: new Date(),
       };
-      const data = await this.commentRepository.updateComment({ _id: id }, newCommentPayload);
+      const data = await this.commentRepository.updateOne(id, newCommentPayload);
 
       this.http.Response({
         res,
         status: "success",
         statuscode: 201,
-        message: "Comment Has been updated",
+        message: "Comment Updated!",
         data,
       });
     } catch (error) {

@@ -11,13 +11,13 @@ export default class DeleteCommentService implements Service<Request, Response, 
     try {
       const { id } = req.params;
 
-      await this.commentRepository.deleteComment({ _id: id });
+      await this.commentRepository.deleteOne(id);
 
       this.http.Response({
         res,
         status: "success",
-        statuscode: 204,
-        message: "Comment has been deleted",
+        statuscode: 200,
+        message: "Comment Deleted!",
       });
     } catch (error) {
       return next(error);
