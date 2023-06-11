@@ -19,7 +19,7 @@ export default class GetBlogCommentService implements Service<Request, Response,
 
       const blog: any = await this.blogRepository.readOne({ slug });
 
-      const comments = await this.commentRepository.readAllComment({
+      const comments = await this.commentRepository.readOne({
         post: blog._id,
       });
 

@@ -1,22 +1,22 @@
 import { injectable } from "tsyringe";
-import Http from "../../../common/utils/http.utils";
+import Http from "../../../../common/utils/http.utils";
 import { NextFunction, Request, Response } from "express";
-import { Blog } from "../../../common/database/model";
-import BlogRepository from "../repository/blog.repository";
-import Service from "../../../common/interface/service.interface";
-import { slugTitle } from "../../../common/utils/slug.utils";
+import { Blog } from "../../../../common/database/model";
+import BlogRepository from "../../repository/blog.repository";
+import Service from "../../../../common/interface/service.interface";
 
 @injectable()
 export default class AddBlogService implements Service<Request, Response, NextFunction> {
   constructor(private blogRepository: BlogRepository, private http: Http) {}
   async execute(req: Request, res: Response, next: NextFunction) {
     try {
-      const { author, title, content } = req.body;
+      const { author, title, body, thumbnail, sub_title } = req.body;
       const newBlogPayload: Blog = {
         author,
         title,
-        slug: slugTitle(title),
-        content,
+        body,
+        sub_title,
+        thumbnail,
       };
 
       const data = await this.blogRepository.createOne(newBlogPayload);

@@ -27,7 +27,7 @@ export default class AddBlogCommentService implements Service<Request, Response,
         post: blog._id,
       };
 
-      const data = await this.commentRepository.createComment(newCommentpayload);
+      const data = await this.commentRepository.createOne(newCommentpayload);
 
       this.http.Response({
         res,

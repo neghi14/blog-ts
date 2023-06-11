@@ -12,10 +12,10 @@ export default class EditBlogService implements Service<Request, Response, NextF
 
   async execute(req: Request, res: Response, next: NextFunction) {
     try {
-      const { title, content, author } = req.body;
+      const { title, body, author } = req.body;
       const newBlogPayload: Blog = {
         title,
-        content,
+        body,
         author,
         updated_at: new Date(),
       };
