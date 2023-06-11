@@ -2,15 +2,16 @@ import { Base } from "./base.model";
 
 export interface User extends Base {
   username?: string;
-  password?: string;
-  name?: string;
   email?: string;
+  first_name?: string;
+  last_name?: string;
+  password?: string;
   phone?: number;
+  verify_token?: string;
+  verify_token_active?: number;
+  reset_token?: string;
+  reset_token_active?: number;
   is_active?: boolean;
-  role?: Role | string;
-}
-
-enum Role {
-  ADMIN,
-  USER,
+  is_verified?: boolean;
+  role?: string;
 }

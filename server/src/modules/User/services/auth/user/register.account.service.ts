@@ -8,14 +8,15 @@ import { ParamsDictionary } from "express-serve-static-core";
 import { ParsedQs } from "qs";
 import { User } from "../../../../../common/database/model";
 import ErrorUtility from "../../../../../common/helpers/error.helper";
-import { compareHash, createHash } from "../../../../../common/utils/bcryptjs.utils";
+import config from "config";
 import Session from "../../../../../common/database/model/session.model";
 import { createToken } from "../../../../../common/utils/jwt.utils";
-import config from "config";
 import { get, omit } from "lodash";
+import { createHash } from "../../../../../common/utils/bcryptjs.utils";
+import crypto from "crypto";
 
 @injectable()
-export default class UserLoginService implements Service<Request, Response, NextFunction> {
+export default class RegisterUserService implements Service<Request, Response, NextFunction> {
   constructor(
     private userRepository: UserRepository,
     private sessionRepository: SessionRepository,
@@ -27,28 +28,41 @@ export default class UserLoginService implements Service<Request, Response, Next
     next: NextFunction
   ): Promise<unknown> {
     try {
-      const { username, password } = req.body;
+      //GET REQ BODY
+      const { username, password, email, phone, first_name, last_name, role } = req.body;
 
-      //VALIDATE INPUT
-      if (!username || !password) return next(new ErrorUtility("User Credentials Invalid", 400));
+      //VALIDATE REQ BODY
+      if (!username || !password || !email || !first_name || !last_name)
+        return next(new ErrorUtility("Invalid Credentials!", 403));
 
-      //GET USER
-      const user: any = await this.userRepository.readOne({ username });
-      if (!user) return next(new ErrorUtility("User not Found!", 404));
+      //CREATE PAYLOAD
+      const token = crypto.randomBytes(3).toString("hex");
+      const verify_token = crypto.createHash("sha256").update(token).digest("hex");
+      const newUserPayload: User = {
+        username: username.toLowerCase(),
+        password: await createHash(password),
+        email,
+        first_name: first_name.toLowerCase(),
+        last_name: last_name.toLowerCase(),
+        phone,
+        role,
+        verify_token,
+        verify_token_active: Date.now() + 5 * (60 * 1000),
+      };
 
-      //VALIDATE PASSWORD
-      const verifiedPassword = await compareHash(password, user.password);
-      if (!verifiedPassword) return next(new ErrorUtility("Passwords Don't Match", 403));
+      //CREATE USER
+      const user: any = await this.userRepository.createOne(newUserPayload);
 
-      //CREATE SESSION TOKEN
+      //CREATE SESSION
       const session_exp = config.get<string>("sessionTtl");
       const refresh_exp = config.get<string>("refreshTtl");
+
       const newSessionPayload: Session = {
         user: user._id,
-        refresh_token: createToken({ user }, { expiresIn: refresh_exp }),
-        session_token: createToken({ user }, { expiresIn: session_exp }),
+        refresh_token: await createToken({ user }, { expiresIn: refresh_exp }),
+        session_token: await createToken({ user }, { expiresIn: session_exp }),
         is_valid: true,
-        userAgent: get(req.headers, "user-agent"),
+        user_agent: get(req.headers, "user-agent"),
         user_ip: req.ip,
       };
       const session: any = await this.sessionRepository.createOne(newSessionPayload);
@@ -57,16 +71,20 @@ export default class UserLoginService implements Service<Request, Response, Next
       res.setHeader("x-refresh", session.refresh_token);
       res.setHeader("x-session", session.session_token);
 
-      //RETURN DATA
+      //SET VERIFICATION URL
+
+      //RETURN RESPONSE
       const data = {
-        user: omit(user.toJSON(), "password"),
+        user,
         session,
+        token,
       };
+
       this.http.Response({
         res,
         status: "success",
-        statuscode: 200,
-        message: "Login Successfull!",
+        statuscode: 201,
+        message: "Account Created!",
         data,
       });
     } catch (error) {

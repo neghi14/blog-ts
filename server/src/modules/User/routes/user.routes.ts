@@ -8,7 +8,7 @@ const userController = container.resolve(UserController);
 
 userRouter.get("/all", (req: Request, res: Response, next: NextFunction) => userController.readAll(req, res, next));
 
-userRouter.post("/", (req: Request, res: Response, next: NextFunction) => userController.createOne(req, res, next));
+userRouter.post("/new", (req: Request, res: Response, next: NextFunction) => userController.createOne(req, res, next));
 
 userRouter
   .get("/:id", (req: Request, res: Response, next: NextFunction) => userController.readOne(req, res, next))

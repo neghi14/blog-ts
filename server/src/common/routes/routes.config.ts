@@ -23,10 +23,10 @@ export class Routes {
       res.sendStatus(200);
     });
     //this.app.use(`/api/v1/blog`, blogRouter);
-    this.app.use(`/api/v1/comment`, commentRouter);
+   // this.app.use(`/api/v1/comment`, commentRouter);
     this.app.use(`/api/v1/user`, userRouter);
-    this.app.use("/api/v1/sessions", sessionRoute);
-    this.app.use("/api/v1/like", likeRoute);
+    //this.app.use("/api/v1/sessions", sessionRoute);
+    //this.app.use("/api/v1/like", likeRoute);
 
     //AUTH ENDPOINT
     this.app.use("/api/v1/auth", authRoute);

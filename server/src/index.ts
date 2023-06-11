@@ -10,7 +10,7 @@ const app = express();
 
 //middlewares
 app.use(express.json());
-app.use(morgan("tiny"));
+app.use(morgan("dev"));
 app.use(cookieParser());
 
 app.use((req: express.Request, res: express.Response, next: express.NextFunction) => {

@@ -8,14 +8,14 @@ import { ParamsDictionary } from "express-serve-static-core";
 import { ParsedQs } from "qs";
 import { User } from "../../../../../common/database/model";
 import ErrorUtility from "../../../../../common/helpers/error.helper";
-import config from "config";
+import { compareHash, createHash } from "../../../../../common/utils/bcryptjs.utils";
 import Session from "../../../../../common/database/model/session.model";
 import { createToken } from "../../../../../common/utils/jwt.utils";
+import config from "config";
 import { get, omit } from "lodash";
-import { createHash } from "../../../../../common/utils/bcryptjs.utils";
 
 @injectable()
-export default class RegisterUserService implements Service<Request, Response, NextFunction> {
+export default class UserLoginService implements Service<Request, Response, NextFunction> {
   constructor(
     private userRepository: UserRepository,
     private sessionRepository: SessionRepository,
@@ -27,37 +27,28 @@ export default class RegisterUserService implements Service<Request, Response, N
     next: NextFunction
   ): Promise<unknown> {
     try {
-      //GET REQ BODY
-      const { username, password, email, phone, name, role } = req.body;
+      const { username, password } = req.body;
 
-      //VALIDATE REQ BODY
-      if (!username || !password || !email || !name) return next(new ErrorUtility("Invalid Credentials!", 403));
+      //VALIDATE INPUT
+      if (!username || !password) return next(new ErrorUtility("User Credentials Invalid", 400));
 
-      //CREATE PAYLOAD
-      const hashedPassword = await createHash(password);
+      //GET USER
+      const user: any = await this.userRepository.readOne({ username });
+      if (!user) return next(new ErrorUtility("User not Found!", 404));
 
-      const newUserPayload = {
-        username,
-        password: hashedPassword,
-        email,
-        name: name.toLowerCase(),
-        phone,
-        role,
-      };
+      //VALIDATE PASSWORD
+      const verifiedPassword = await compareHash(password, user.password);
+      if (!verifiedPassword) return next(new ErrorUtility("Passwords Don't Match", 403));
 
-      //CREATE USER
-      const user: any = await this.userRepository.createOne(newUserPayload);
-
-      //CREATE SESSION
+      //CREATE SESSION TOKEN
       const session_exp = config.get<string>("sessionTtl");
       const refresh_exp = config.get<string>("refreshTtl");
-
       const newSessionPayload: Session = {
         user: user._id,
-        refresh_token: await createToken({ user }, { expiresIn: refresh_exp }),
-        session_token: await createToken({ user }, { expiresIn: session_exp }),
+        refresh_token: createToken({ user }, { expiresIn: refresh_exp }),
+        session_token: createToken({ user }, { expiresIn: session_exp }),
         is_valid: true,
-        userAgent: get(req.headers, "user-agent"),
+        user_agent: get(req.headers, "user-agent"),
         user_ip: req.ip,
       };
       const session: any = await this.sessionRepository.createOne(newSessionPayload);
@@ -66,17 +57,16 @@ export default class RegisterUserService implements Service<Request, Response, N
       res.setHeader("x-refresh", session.refresh_token);
       res.setHeader("x-session", session.session_token);
 
-      //RETURN RESPONSE
+      //RETURN DATA
       const data = {
-        user,
+        user: omit(user.toJSON(), "password"),
         session,
       };
-
       this.http.Response({
         res,
         status: "success",
-        statuscode: 201,
-        message: "Account Created!",
+        statuscode: 200,
+        message: "Login Successfull!",
         data,
       });
     } catch (error) {
