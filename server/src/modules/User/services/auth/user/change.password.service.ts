@@ -37,9 +37,11 @@ export default class ChangePasswordService implements Service<Request, Response,
       if (!user.is_active) return next(new ErrorUtility("Account is Invalid/Deleted", 400));
 
       //CHECK PASSWORDS
-      const check = compareHash(old_password, user.password);
+      if (!user_token) {
+        const check = compareHash(old_password, user.password);
+        if (!check) return next(new ErrorUtility("Password doesn't match previos password", 400));
+      }
 
-      if (!check) return next(new ErrorUtility("Password doesn't match previos password", 400));
       await this.user.updateOne(user._id, {
         password: createHash(password),
         updated_at: new Date(),
