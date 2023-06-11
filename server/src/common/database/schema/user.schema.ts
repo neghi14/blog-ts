@@ -7,7 +7,11 @@ const UserSchema: Schema = new Schema<User>({
     required: true,
     unique: true,
   },
-  name: {
+  first_name: {
+    type: String,
+    required: true,
+  },
+  last_name: {
     type: String,
     required: true,
   },
@@ -27,6 +31,16 @@ const UserSchema: Schema = new Schema<User>({
     type: Boolean,
     default: true,
   },
+  is_verified: {
+    type: Boolean,
+    default: false,
+  },
+  verify_token: {
+    type: String,
+  },
+  verify_token_active: Date,
+  reset_token: String,
+  reset_token_active: Date,
   role: {
     type: String,
     enum: ["ADMIN", "USER"],

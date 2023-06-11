@@ -1,8 +1,8 @@
 import { injectable } from "tsyringe";
 import { NextFunction, Request, Response } from "express";
-import AddUserService from "../services/create.user";
+import AddUserService from "../services/auth/admin/create.user";
 import EditUserService from "../services/edit.user";
-import DeleteUserService from "../services/delete.user";
+import DeleteUserService from "../services/auth/admin/delete.user";
 import GetUserService from "../services/get.user";
 import GetUsersService from "../services/get.users";
 import CONTROLLER from "../../../common/interface/controller.interface";

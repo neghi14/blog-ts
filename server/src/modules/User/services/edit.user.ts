@@ -14,16 +14,12 @@ export default class EditUserService implements Service<Request, Response, NextF
     try {
       const { id } = req.params;
 
-      const { username, name, email, is_active, password, role } = req.body;
+      const { is_active, password } = req.body;
 
       const hashedPassword = await createHash(password);
 
       const newUserPayload: User = {
-        username,
-        name,
-        email,
         is_active,
-        role,
         password: hashedPassword,
         updated_at: new Date(),
       };

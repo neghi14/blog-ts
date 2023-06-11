@@ -1,9 +1,9 @@
 import { injectable } from "tsyringe";
-import Service from "../../../common/interface/service.interface";
+import Service from "../../../../../common/interface/service.interface";
 import { NextFunction, Request, Response } from "express";
-import UserRepository from "../repositories/user.repository";
-import Http from "../../../common/utils/http.utils";
-import ErrorUtility from "../../../common/helpers/error.helper";
+import UserRepository from "../../../repositories/user.repository";
+import Http from "../../../../../common/utils/http.utils";
+import ErrorUtility from "../../../../../common/helpers/error.helper";
 
 @injectable()
 export default class DeleteUserService implements Service<Request, Response, NextFunction> {

@@ -7,7 +7,7 @@ export default class DatabaseQueryHelper {
     try {
       return await model.findOne(params);
     } catch (error: any) {
-      error.message;
+      return error.message;
     }
   }
 
@@ -37,13 +37,13 @@ export default class DatabaseQueryHelper {
 
       return await model.find(JSON.parse(queryStr)).sort(sort).skip(page).limit(limit);
     } catch (error: any) {
-      error.message;
+      return error.message;
     }
   }
 
-  async createOne(model: Model<any>, payload: object) {
+   createOne(model: Model<any>, payload: object) {
     try {
-      return await model.create(payload);
+      return model.create(payload);
     } catch (error: any) {
       error.message;
     }
@@ -53,7 +53,7 @@ export default class DatabaseQueryHelper {
     try {
       return await model.findByIdAndUpdate(params, payload, { new: true });
     } catch (error: any) {
-      error.message;
+      return error.message;
     }
   }
 
@@ -61,14 +61,14 @@ export default class DatabaseQueryHelper {
     try {
       return await model.findByIdAndRemove(params);
     } catch (error: any) {
-      error.message;
+      return error.message;
     }
   }
   async countAll(model: Model<any>) {
     try {
       return await model.countDocuments();
     } catch (error: any) {
-      error.message;
+      return error.message;
     }
   }
 }
