@@ -11,10 +11,15 @@ export default class GetBlogService implements Service<Request, Response, NextFu
   async execute(req: Request, res: Response, next: NextFunction) {
     try {
       const { id } = req.params;
-      const data = await this.blogRepository.readOne({ _id: id });
+      const blog: any = await this.blogRepository.readOne({ _id: id });
+      let data;
+      if (blog.is_deleted) {
+        data = blog;
+      } else {
+        data = await this.blogRepository.updateOne(blog._id, { view_count: blog.view_count + 1 });
+      }
 
-      if (!data)  return next(new ErrorUtility("Blogpost not Found", 404));
-      
+      if (!data) return next(new ErrorUtility("Blogpost not Found", 404));
 
       this.http.Response({
         res,

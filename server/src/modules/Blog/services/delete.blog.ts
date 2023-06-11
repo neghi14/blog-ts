@@ -14,11 +14,11 @@ export default class DeleteBlogService implements Service<Request, Response, Nex
       const data = await this.blogRepository.deleteOne(id);
 
       if (!data) {
-        return next(new ErrorUtility("Blog postnot Found!", 404));
+        return next(new ErrorUtility("Blog post not Found!", 404));
       }
       this.http.Response({
         res,
-        statuscode: 204,
+        statuscode: 200,
         status: "success",
         message: "Blog Deleted!",
       });

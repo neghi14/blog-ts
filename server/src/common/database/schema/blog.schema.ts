@@ -4,19 +4,24 @@ import { Blog } from "../model";
 const BlogSchema: Schema = new Schema<Blog>({
   title: {
     type: String,
-    min: 10,
-    max: 100,
     required: true,
   },
-  content: {
+  body: {
     type: String,
-    min: 300,
-    max: 3000,
     required: true,
   },
-  slug: {
+  thumbnail: {
     type: String,
-    unique: true,
+    requierd: true,
+  },
+  sub_title: String,
+  view_count: {
+    type: Number,
+    default: 0,
+  },
+  is_deleted: {
+    type: Boolean,
+    default: false,
   },
   author: {
     type: Schema.Types.ObjectId,
