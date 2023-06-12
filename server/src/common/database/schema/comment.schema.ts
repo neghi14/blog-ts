@@ -11,10 +11,18 @@ const CommentSchema: Schema = new Schema<Comment>({
     type: String,
     required: true,
   },
-  post: {
+  article: {
     type: Schema.Types.ObjectId,
     ref: "Blogs",
     required: true,
+  },
+  replied_to: {
+    type: Schema.Types.ObjectId,
+    ref: "Comments",
+  },
+  is_deleted: {
+    type: Boolean,
+    default: false,
   },
   restricted: {
     type: Boolean,

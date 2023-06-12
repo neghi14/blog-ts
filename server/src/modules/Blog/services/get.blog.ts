@@ -4,23 +4,36 @@ import BlogRepository from "../repository/blog.repository";
 import { injectable } from "tsyringe";
 import Service from "../../../common/interface/service.interface";
 import ErrorUtility from "../../../common/helpers/error.helper";
+import { Blog } from "../../../common/database/model";
+import CommentRepository from "../../Comment/repository/comment.repository";
 
 @injectable()
 export default class GetBlogService implements Service<Request, Response, NextFunction> {
-  constructor(private blogRepository: BlogRepository, private http: Http) {}
+  constructor(
+    private blogRepository: BlogRepository,
+    private http: Http,
+    private commentRepository: CommentRepository
+  ) {}
   async execute(req: Request, res: Response, next: NextFunction) {
     try {
       const { id } = req.params;
-      const blog: any = await this.blogRepository.readOne({ _id: id });
-      let data;
-      if (blog.is_deleted) {
-        data = blog;
+      const oldBlog: Blog = await this.blogRepository.readOne({ _id: id });
+      const comments = await this.commentRepository.readAll({ article: id });
+      let newBlog;
+      if (oldBlog.is_deleted) {
+        newBlog = oldBlog;
       } else {
-        data = await this.blogRepository.updateOne(blog._id, { view_count: blog.view_count + 1 });
+        newBlog = await this.blogRepository.updateOne(oldBlog._id || "", {
+          view_count: Number(oldBlog.view_count) + 1,
+        });
       }
 
-      if (!data) return next(new ErrorUtility("Blogpost not Found", 404));
+      if (!newBlog) return next(new ErrorUtility("Blogpost not Found", 404));
 
+      const data = {
+        article: newBlog,
+        comments,
+      };
       this.http.Response({
         res,
         statuscode: 200,

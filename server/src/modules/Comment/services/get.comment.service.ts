@@ -10,11 +10,16 @@ export default class GetCommentService implements Service<Request, Response, Nex
   constructor(private commentRepository: CommentRepository, private http: Http) {}
   async execute(req: Request, res: Response, next: NextFunction) {
     try {
-      const { id } = req.params;
+      const { comment_id } = req.params;
 
-      const data = await this.commentRepository.readOne({ _id: id });
-      if (!data) return next(new ErrorUtility("Comment not Found!", 404));
+      const comment = await this.commentRepository.readOne({ _id: comment_id });
+      const reply = await this.commentRepository.readAll({ replied_to: comment_id });
+      if (!comment) return next(new ErrorUtility("Comment not Found!", 404));
 
+      const data = {
+        comment,
+        replies: reply,
+      };
       this.http.Response({
         res,
         status: "success",
