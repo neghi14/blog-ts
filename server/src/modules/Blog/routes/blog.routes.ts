@@ -1,31 +1,26 @@
 import { NextFunction, Request, Response, Router } from "express";
 import BlogController from "../controller/blog.controller";
 import { container } from "tsyringe";
-import BlogCommentController from "../controller/comment/comment.controller";
-
-const blogRouter: Router = Router();
+import CommentController from "../../Comment/controller/comment.controller";
 
 const blogController = container.resolve(BlogController);
-const blogCommentController = container.resolve(BlogCommentController);
+const commentController = container.resolve(CommentController);
+const blogRouter = Router();
 
 blogRouter
-  .get("/all", (req: Request, res: Response, next: NextFunction) => blogController.readAll(req, res, next))
-  .post("/new", (req: Request, res: Response, next: NextFunction) => blogController.createOne(req, res, next))
-  .post("/delete/:blog_id", (req: Request, res: Response, next: NextFunction) =>
-    blogController.deleteUserBlog(req, res, next)
+  .get("/", (req: Request, res: Response, next: NextFunction) => blogController.getBlogs(req, res, next))
+  .get("/:id", (req: Request, res: Response, next: NextFunction) => blogController.getBlog(req, res, next))
+  .get("/:id/comments/:comment_id", (req: Request, res: Response, next: NextFunction) =>
+    commentController.getComment(req, res, next)
+  )
+  .get("/:id/comments/:comment_id/replies", (req: Request, res: Response, next: NextFunction) =>
+    commentController.getReply(req, res, next)
+  )
+  .post("/:id/comments", (req: Request, res: Response, next: NextFunction) =>
+    commentController.createComment(req, res, next)
+  )
+  .post("/:id/comments/:comment_id/replies", (req: Request, res: Response, next: NextFunction) =>
+    commentController.createReply(req, res, next)
   );
-
-blogRouter
-  .get("/:id", (req: Request, res: Response, next: NextFunction) => blogController.readOne(req, res, next))
-  .patch("/:id", (req: Request, res: Response, next: NextFunction) => blogController.updateOne(req, res, next))
-  .delete("/:id", (req: Request, res: Response, next: NextFunction) => blogController.deleteOne(req, res, next));
-
-// blogRouter
-//   .get("/:slug/comment", (req: Request, res: Response, next: NextFunction) =>
-//     blogCommentController.getBlogComment(req, res, next)
-//   )
-//   .post("/:slug/comment", (req: Request, res: Response, next: NextFunction) =>
-//     blogCommentController.postBlogComment(req, res, next)
-//   );
 
 export default blogRouter;

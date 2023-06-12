@@ -41,7 +41,7 @@ export default class DatabaseQueryHelper {
     }
   }
 
-   createOne(model: Model<any>, payload: object) {
+  createOne(model: Model<any>, payload: object) {
     try {
       return model.create(payload);
     } catch (error: any) {
@@ -67,6 +67,13 @@ export default class DatabaseQueryHelper {
   async countAll(model: Model<any>) {
     try {
       return await model.countDocuments();
+    } catch (error: any) {
+      return error.message;
+    }
+  }
+  async deleteAll(model: Model<any>, query: object) {
+    try {
+      return await model.deleteMany(query);
     } catch (error: any) {
       return error.message;
     }

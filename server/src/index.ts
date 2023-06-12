@@ -3,7 +3,7 @@ import { Server } from "./common/config/server.config";
 import express from "express";
 import morgan from "morgan";
 import cookieParser from "cookie-parser";
-import { Routes } from "./common/routes/routes.config";
+import Routes from "./common/routes/routes.config";
 import databaseConfig from "./common/config/database.config";
 
 const app = express();

@@ -1,8 +1,8 @@
 export default interface CRUD {
-  readOne(params: object): Promise<unknown>;
-  readAll(query: Record<string, any>): Promise<unknown>;
-  createOne(payload: object): Promise<unknown>;
-  updateOne(params: string, payload: object): Promise<unknown>;
-  deleteOne(params: string): Promise<unknown>;
-  countAll(): Promise<unknown>;
+  readOne(params: object): Promise<any>;
+  readAll(query: Record<string, any>): Promise<any>;
+  createOne(payload: object): Promise<any>;
+  updateOne(params: string, payload: object): Promise<any>;
+  deleteOne(params: string): Promise<any>;
+  countAll(): Promise<any>;
 }

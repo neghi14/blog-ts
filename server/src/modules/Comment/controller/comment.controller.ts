@@ -1,44 +1,34 @@
 import { injectable } from "tsyringe";
 import { NextFunction, Request, Response } from "express";
-import RestrictComment from "../services/admin/restrict.comment";
-import GetCommentsService from "../services/get.comments";
-import AddCommentService from "../services/create.comment";
-import GetCommentService from "../services/get.comment";
-import DeleteCommentService from "../services/delete.comment";
-import EditCommentService from "../services/edit.comment";
-import CONTROLLER from "../../../common/interface/controller.interface";
+import GetCommentsService from "../services/get.comments.service";
+import GetCommentService from "../services/get.comment.service";
+import CreateCommentService from "../services/create.comment.service";
+import CreateReplyService from "../services/reply/create.reply.service";
+import GetReplyService from "../services/reply/get.reply.service";
 
 @injectable()
-export default class CommentController implements CONTROLLER<Request, Response, NextFunction> {
+export default class CommentController {
   constructor(
-    private getComment: GetCommentService,
-    private getAllComments: GetCommentsService,
-    private addComment: AddCommentService,
-    private editComment: EditCommentService,
-    private removeComment: DeleteCommentService,
-    private restrictComment: RestrictComment
+    private getCommentService: GetCommentService,
+    private getCommentsService: GetCommentsService,
+    private createCommentservice: CreateCommentService,
+    private getReplyService: GetReplyService,
+    private createReplyService: CreateReplyService
   ) {}
 
-  async readAll(req: Request, res: Response, next: NextFunction) {
-    await this.getAllComments.execute(req, res, next);
+  async getComments(req: Request, res: Response, next: NextFunction) {
+    await this.getCommentsService.execute(req, res, next);
   }
-  async readOne(req: Request, res: Response, next: NextFunction) {
-    await this.getComment.execute(req, res, next);
+  async getComment(req: Request, res: Response, next: NextFunction) {
+    await this.getCommentService.execute(req, res, next);
   }
-
-  async createOne(req: Request, res: Response, next: NextFunction) {
-    await this.addComment.execute(req, res, next);
+  async createComment(req: Request, res: Response, next: NextFunction) {
+    await this.createCommentservice.execute(req, res, next);
   }
-
-  async updateOne(req: Request, res: Response, next: NextFunction) {
-    await this.editComment.execute(req, res, next);
+  async getReply(req: Request, res: Response, next: NextFunction) {
+    await this.getReplyService.execute(req, res, next);
   }
-
-  async deleteOne(req: Request, res: Response, next: NextFunction) {
-    await this.removeComment.execute(req, res, next);
-  }
-
-  async adminRestrictComment(req: Request, res: Response, next: NextFunction) {
-    await this.restrictComment.execute(req, res, next);
+  async createReply(req: Request, res: Response, next: NextFunction) {
+    await this.createReplyService.execute(req, res, next);
   }
 }
