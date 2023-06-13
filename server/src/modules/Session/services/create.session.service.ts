@@ -26,7 +26,7 @@ export default class CreateSessionService implements Service<Request, Response, 
       const newSessionPayload: Session = {
         refresh_token: createToken({ _id: user }, { expiresIn: refresh_exp }),
         session_token: createToken({ _id: user }, { expiresIn: session_exp }),
-        userAgent: get(req.headers, "user-agent") || "",
+        user_agent: get(req.headers, "user-agent") || "",
         user_ip: req.ip,
         is_valid: true,
       };

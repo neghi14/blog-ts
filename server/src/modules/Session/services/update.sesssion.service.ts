@@ -4,7 +4,6 @@ import { NextFunction, Request, Response } from "express";
 import SessionRepository from "../repository/session.repository";
 import Http from "../../../common/utils/http.utils";
 import { ParsedQs } from "qs";
-import { FilterQuery } from "mongoose";
 import ErrorUtility from "../../../common/helpers/error.helper";
 import Session from "../../../common/database/model/session.model";
 
