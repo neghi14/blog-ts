@@ -1,0 +1,151 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Primary Styles */
+
+.main {
+    width: 100vw;
+    min-height: 100vh;
+    position: fixed;
+}
+
+
+.gradient {
+    z-index: 3;
+    width: 100%;
+    background-image: radial-gradient(at 10% 80%,
+            rgb(160, 220, 235) 0px,
+            transparent 50%),
+        radial-gradient(at 97% 10%, #5590CC 0px, transparent 50%),
+        radial-gradient(at 50% 50%, hsl(0, 54%, 57%) 0px, transparent 50% );
+
+    position: absolute;
+    height: 100%;
+    filter: blur(100px) saturate(150%);
+    opacity: 0.25;
+}
+
+/* Common Styles */
+
+.position {
+    @apply mx-auto my-0 md:max-w-2xl lg:max-w-4xl xl:max-w-6xl 2xl:max-w-6xl py-4 md:px-0 px-4
+}
+
+.btn {
+    @apply px-4 py-1 rounded-lg text-base font-medium
+}
+.btn--group{
+    @apply flex flex-row gap-2
+}
+
+.btn--active {
+    @apply border border-[#5590CC] text-[#5590CC]
+}
+
+.btn--hover {
+    @apply hover:bg-blue-500 hover:text-white hover:underline transition-all duration-300 hover:translate-y-[-2px];
+    backface-visibility: hidden;
+}
+
+.btn--feed{
+    @apply hover:bg-blue-100 rounded-none 
+}
+
+.btn--feed-active{
+    @apply border-b-4 border-blue-500 bg-blue-100
+}
+
+.btn--pressed {
+    @apply active:translate-y-[1px]
+}
+
+/* Specific Styles */
+.nav {
+    @apply flex justify-between flex-row items-center
+}
+
+.nav--sub {
+    @apply flex flex-row gap-2 items-center
+}
+
+.nav__link {
+    @apply text-base font-medium
+}
+
+.link__home{
+    @apply text-2xl font-bold;
+    background: linear-gradient(270deg, #5590CC, #4397C7);;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.nav__link--hover {
+    @apply hover:bg-blue-100 transition-all duration-300 hover:underline rounded-md px-2 py-1 hover:translate-y-[-1px]
+}
+
+.hero {
+    @apply py-16
+}
+
+.hero__header {
+    @apply flex flex-col gap-2;
+    width: calc(100% - 20%);
+}
+
+.header--main {
+    @apply md:text-6xl font-bold capitalize text-4xl
+}
+
+.header--main-sub {
+    background: linear-gradient(270deg, #5590CC, #4397C7);;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.header--sub {
+    @apply text-lg font-medium
+}
+
+.feed{
+@apply flex flex-col gap-4
+}
+
+.feed__block{
+    @apply md:grid lg:grid-cols-2 flex flex-col gap-2
+}
+.feed__item{
+    @apply p-4 border bg-white rounded-lg shadow-md col-span-1
+}
+.item__body{
+    @apply flex flex-col gap-2 w-full
+}
+
+.body__author{
+    @apply flex flex-row items-center gap-1
+}
+.body__author--details{
+@apply flex flex-col gap-0
+}
+.author__name{
+    @apply text-sm md:text-base font-medium capitalize
+}
+
+.author__date{
+    @apply text-xs
+}
+
+.body__title{
+    @apply text-xl capitalize font-semibold md:text-2xl
+}
+.body__interactions{
+    @apply flex flex-row justify-between items-center
+}
+.body__interactions--sub{
+    @apply flex flex-row gap-6 items-center
+}
+.interactions{
+    @apply flex flex-row items-center gap-1 cursor-pointer hover:bg-blue-100 p-1 rounded-md
+}
