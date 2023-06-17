@@ -37,4 +37,15 @@ const BlogSchema: Schema = new Schema<Blog>({
   },
 });
 
+BlogSchema.pre(/^find/, async function (next) {
+  this.select("-__v");
+  //@ts-ignore
+  this.populate({
+    path: "author",
+    select:"-__v -password"
+  })
+
+  next();
+});
+
 export default model<Blog>("Blogs", BlogSchema);
