@@ -29,7 +29,7 @@
 /* Common Styles */
 
 .position {
-    @apply mx-auto my-0 md:max-w-2xl lg:max-w-4xl xl:max-w-6xl 2xl:max-w-6xl py-4 md:px-0 px-4
+    @apply mx-auto my-0 md:max-w-2xl lg:max-w-4xl xl:max-w-6xl 2xl:max-w-6xl py-4 md:px-0 px-2
 }
 
 .btn {
@@ -117,7 +117,7 @@
     @apply md:grid lg:grid-cols-2 flex flex-col gap-2
 }
 .feed__item{
-    @apply p-4 border bg-white rounded-lg shadow-md col-span-1
+    @apply p-4 border bg-white rounded-lg shadow-md col-span-1 hover:translate-y-[-1px] transition-all cursor-pointer
 }
 .item__body{
     @apply flex flex-col gap-2 w-full
@@ -148,4 +148,36 @@
 }
 .interactions{
     @apply flex flex-row items-center gap-1 cursor-pointer hover:bg-blue-100 p-1 rounded-md
+}
+
+/* Authentication */
+
+.authentication{
+    @apply  rounded-lg md:px-6 px-3 py-10 mt-12;
+}
+.authentication__header{
+    @apply text-center mb-6
+}
+.authentication__header--main{
+    @apply text-3xl md:text-4xl font-bold mb-1;
+    background: linear-gradient(270deg, #5590CC, #4397C7);;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.form__group{
+    @apply mb-4
+}
+.form__title{
+    @apply mb-2 block capitalize font-medium
+}
+.form__input{
+    @apply w-full border-2 rounded-md p-2 bg-transparent
+}
+.form__input:focus{
+    outline: none;
+}
+.btn--auth{
+    @apply w-full bg-blue-500 h-12 text-lg text-white
 }
