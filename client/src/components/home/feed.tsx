@@ -7,17 +7,19 @@ export default function Feed() {
   const [blog, setBlog] = useState({});
 
   useEffect(() => {
-    const fetchBlog = async () => {
-      const res = await fetch(
-        "http://localhost:8080/api/v1/blogs/64859fdccb94f35fd0a9e04d"
-      );
-      const data = await res.json();
-      setBlog(data.data);
-    };
-    fetchBlog();
+    fetch("http://localhost:8080/api/v1/blogs/64859fdccb94f35fd0a9e04d")
+      .then((res) => res.json())
+      .then((data) => setBlog(data.data));
   }, []);
+
   console.log(blog);
-  console.log(active);
+  const article = {
+    title: blog.article.title,
+    author: `${blog.article.author.first_name} ${blog.article.author.last_name}`,
+    view: blog.article.view_count,
+    comment: blog.comments,
+    created_at: blog.article.created_at,
+  };
   return (
     <div className="feed">
       <div className="btn--group">
@@ -43,15 +45,8 @@ export default function Feed() {
         </button>
       </div>
       <div className="feed__block">
-        <FeedCard />
-        <FeedCard />
-        <FeedCard />
-        <FeedCard />
-        <FeedCard />
-        <FeedCard />
-        <FeedCard />
+        <FeedCard article={article} />
       </div>
-      
     </div>
   );
 }
