@@ -5,7 +5,7 @@
   "main": "dist/index.js",
   "scripts": {
     "dev": "nodemon src/index.ts",
-    "build": "rm -rf dist && tsc",
+    "build": "yarn install && rm -rf dist && tsc",
     "build:test": "nodemon",
     "test": "jest --detectOpenHandles",
     "test:watch": "jest --watch"
