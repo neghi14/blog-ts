@@ -18,10 +18,11 @@ export default class CreateReplyService implements Service<Request, Response, Ne
     try {
       const { id, comment_id } = req.params;
 
-      const { author, body } = req.body;
+      const { body } = req.body;
+      const { _id } = res.locals.user;
 
       const newReplyPayload: Comment = {
-        author,
+        author: _id,
         body,
         article: id,
         replied_to: comment_id,

@@ -5,6 +5,7 @@ import LikesRepository from "../repository/likes.repository";
 import Http from "../../../common/utils/http.utils";
 import { ParamsDictionary } from "express-serve-static-core";
 import { ParsedQs } from "qs";
+import { Like } from "../../../common/database/model";
 
 @injectable()
 export default class CreateLikeService implements Service<Request, Response, NextFunction> {
@@ -15,7 +16,13 @@ export default class CreateLikeService implements Service<Request, Response, Nex
     next: NextFunction
   ): Promise<unknown> {
     try {
-      const data = await this.likesRepository.createOne(req.body);
+      const { id } = req.params;
+      const { _id } = res.locals.user;
+      const newLikesPayload: Like = {
+        liked_post: id,
+        liked_by: _id,
+      };
+      const data = await this.likesRepository.createOne(newLikesPayload);
 
       this.http.Response({
         res,

@@ -16,12 +16,13 @@ export default class CreateListService implements Service<Request, Response, Nex
     next: NextFunction
   ): Promise<unknown> {
     try {
-      const { title, author, thumbnail } = req.body;
+      const { title, thumbnail } = req.body;
+      const { _id } = res.locals.user;
 
       const newListPayload: List = {
         title,
         thumbnail,
-        author,
+        author: _id,
       };
       const data = await this.listRepository.createOne(newListPayload);
 

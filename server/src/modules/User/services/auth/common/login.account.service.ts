@@ -43,10 +43,13 @@ export default class UserLoginService implements Service<Request, Response, Next
       //CREATE SESSION TOKEN
       const session_exp = config.get<string>("sessionTtl");
       const refresh_exp = config.get<string>("refreshTtl");
+
+      //
+      const token = await createToken({ user }, { expiresIn: session_exp });
       const newSessionPayload: Session = {
         user: user._id,
-        refresh_token: createToken({ user }, { expiresIn: refresh_exp }),
-        session_token: createToken({ user }, { expiresIn: session_exp }),
+        refresh_token: createToken({ user, session: token }, { expiresIn: refresh_exp }),
+        session_token: token,
         is_valid: true,
         user_agent: get(req.headers, "user-agent"),
         user_ip: req.ip,

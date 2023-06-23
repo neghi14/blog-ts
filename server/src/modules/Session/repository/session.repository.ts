@@ -20,7 +20,7 @@ export default class SessionRepository implements CRUD {
       return error;
     }
   }
-  async createOne(payload: Session): Promise<unknown> {
+  async createOne(payload: Session): Promise<any> {
     try {
       return await createOne(sessionSchema, payload);
     } catch (error) {

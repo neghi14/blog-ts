@@ -1,29 +1,40 @@
 import { injectable } from "tsyringe";
 import Service from "../../../common/interface/service.interface";
 import { NextFunction, Request, Response } from "express";
-import LikesRepository from "../repository/likes.repository";
+import BlogRepository from "../repository/blog.repository";
 import Http from "../../../common/utils/http.utils";
 import { ParamsDictionary } from "express-serve-static-core";
 import { ParsedQs } from "qs";
-import ErrorUtility from "../../../common/helpers/error.helper";
+import { Blog } from "../../../common/database/model";
+import { slugTitle } from "../../../common/utils/slug.utils";
 
 @injectable()
-export default class UpdateLikeService implements Service<Request, Response, NextFunction> {
-  constructor(private likeRepository: LikesRepository, private http: Http) {}
+export default class CreateBlogService implements Service<Request, Response, NextFunction> {
+  constructor(private blogRepository: BlogRepository, private http: Http) {}
   async execute(
     req: Request<ParamsDictionary, any, any, ParsedQs, Record<string, any>>,
     res: Response<any, Record<string, any>>,
     next: NextFunction
   ): Promise<unknown> {
     try {
-      const { id } = req.params;
-      const data = await this.likeRepository.updateOne(id, req.body);
-      if (!data) return next(new ErrorUtility("Like not Found!", 404));
+      const { title, body, thumbnail } = req.body;
+      const { _id } = res.locals.user;
+
+      const newBlogPayload: Blog = {
+        author: _id,
+        title,
+        body,
+        thumbnail,
+        slug: slugTitle(title),
+      };
+
+      const data = await this.blogRepository.createOne(newBlogPayload);
+
       this.http.Response({
         res,
         status: "success",
         statuscode: 201,
-        message: "Like Updated!",
+        message: "Blog Published!",
         data,
       });
     } catch (error) {

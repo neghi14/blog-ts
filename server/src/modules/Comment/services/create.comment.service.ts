@@ -18,11 +18,10 @@ export default class CreateCommentService implements Service<Request, Response, 
   ): Promise<any> {
     try {
       const { id } = req.params;
-      const { author, body } = req.body;
-
+      const { body } = req.body;
       const newCommentPayload: Comment = {
         article: id,
-        author,
+        author: res.locals.user._id,
         body,
       };
 
