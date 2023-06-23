@@ -3,9 +3,12 @@
   "version": "1.0.0",
   "description": "",
   "main": "dist/index.js",
+  "engines": {
+    "node": ">=14.20.1"
+  },
   "scripts": {
     "dev": "nodemon src/index.ts",
-    "build": "yarn install && rm -rf dist && tsc",
+    "build": "rm -rf dist && tsc",
     "build:test": "nodemon",
     "test": "jest --detectOpenHandles",
     "test:watch": "jest --watch"
