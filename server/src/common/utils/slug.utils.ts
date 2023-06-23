@@ -1,4 +1,5 @@
 import slugify from "slugify";
+import crypto from "crypto";
 
 export const slugTitle = (data: string) => {
   const splitData = data.split(" ");
@@ -10,8 +11,8 @@ export const slugTitle = (data: string) => {
       newData.push(e);
     }
   });
-
-  return slugify(`${newData.join(" ")}-${Date.now()}`, {
+  const random = crypto.randomBytes(3).toString("hex");
+  return slugify(`${newData.join(" ")}-${random}`, {
     lower: true,
   });
 };

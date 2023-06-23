@@ -9,6 +9,11 @@ const LikeSchema: Schema = new Schema<Like>({
   liked_post: {
     type: Schema.Types.ObjectId,
     ref: "Blogs",
+    required: true,
+  },
+  liked_comment: {
+    type: Schema.Types.ObjectId,
+    ref: "Comments",
   },
   created_at: {
     type: Date,

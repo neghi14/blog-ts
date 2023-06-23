@@ -1,6 +1,11 @@
 import jwt from "jsonwebtoken";
 import config from "config";
 
+export interface JwtObject {
+  valid: boolean;
+  expired: boolean;
+  decoded: any;
+}
 const pub_key = Buffer.from(config.get<string>("pub_key"), "base64").toString("ascii");
 const pri_key = Buffer.from(config.get<string>("priv_key"), "base64").toString("ascii");
 
@@ -11,7 +16,7 @@ export const createToken = (data: object, options: jwt.SignOptions): string => {
   });
 };
 
-export const verifyToken = (token: string): object => {
+export const verifyToken = (token: string): JwtObject => {
   try {
     const decoded = jwt.verify(token, pub_key);
     return {
