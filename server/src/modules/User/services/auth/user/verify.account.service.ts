@@ -30,7 +30,12 @@ export default class VerifyUserService implements Service<Request, Response, Nex
       if (!user) return next(new ErrorUtility("Invalid token", 400));
       if (user.verify_token_active < Date.now()) return next(new ErrorUtility("Token expired", 403));
 
-      await this.userRepository.updateOne(user._id, { is_verified: true, updated_at: new Date(), verify_token: "", verify_token_active: "" });
+      await this.userRepository.updateOne(user._id, {
+        is_verified: true,
+        updated_at: new Date(),
+        verify_token: "",
+        verify_token_active: "",
+      });
 
       this.http.Response({
         res,

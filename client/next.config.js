@@ -1,4 +1,8 @@
 /** @type {import('next').NextConfig} */
-const nextConfig = {}
+const nextConfig = {
+  env: {
+    endpoint: "https://blog-7gis.onrender.com/api/v1/",
+  },
+};
 
-module.exports = nextConfig
+module.exports = nextConfig;

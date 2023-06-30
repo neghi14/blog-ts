@@ -29,6 +29,7 @@ const CommentSchema: Schema = new Schema<Comment>(
     restricted: {
       type: Boolean,
       default: false,
+      required: true,
     },
     created_at: {
       type: Date,
@@ -49,13 +50,19 @@ CommentSchema.virtual("replies", {
   foreignField: "replied_to",
   localField: "_id",
 });
+CommentSchema.virtual("like", {
+  ref: "Likes",
+  foreignField: "liked_comment",
+  localField: "_id",
+});
 
 CommentSchema.pre(/^find/, function (next) {
   //@ts-ignore
-  this.populate({
-    path: "replies",
-    select: "-__v",
-  });
+  this.populate("author");
+  //@ts-ignore
+  this.populate("replies");
+  //@ts-ignore
+  this.populate("like");
   next();
 });
 

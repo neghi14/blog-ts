@@ -6,7 +6,7 @@ import userRouter from "../../modules/User/routes/user.routes";
 import authRouter from "../../modules/User/routes/auth/auth.routes";
 
 export default class Routes {
-  app;
+  app: Application;
   constructor(app: Application) {
     this.app = app;
   }

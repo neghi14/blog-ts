@@ -7,5 +7,5 @@ export interface Blog extends Base {
   slug: string;
   thumbnail?: string;
   view_count?: number;
-  is_deleted?: string;
+  is_deleted?: string | boolean;
 }

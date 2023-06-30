@@ -1,6 +1,6 @@
 import { injectable } from "tsyringe";
-import UserLoginService from "../../../services/auth/common/login.account.service";
 import { NextFunction, Request, Response } from "express";
+import UserLoginService from "../../../services/auth/common/login.account.service";
 import RegisterUserService from "../../../services/auth/user/register.account.service";
 import DeleteMeService from "../../../services/auth/user/delete.account.service";
 import ChangePasswordService from "../../../services/auth/user/change.password.service";
