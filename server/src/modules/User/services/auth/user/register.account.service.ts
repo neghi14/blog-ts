@@ -29,11 +29,9 @@ export default class RegisterUserService implements Service<Request, Response, N
   ): Promise<unknown> {
     try {
       //GET REQ BODY
-      const { username, password, email, phone, first_name, last_name, role } = req.body;
-
+      const { username, password, email } = req.body;
       //VALIDATE REQ BODY
-      if (!username || !password || !email || !first_name || !last_name)
-        return next(new ErrorUtility("Invalid Credentials!", 403));
+      if (!username || !password || !email) return next(new ErrorUtility("Invalid Credentials!", 403));
 
       //CREATE PAYLOAD
       const token = crypto.randomBytes(3).toString("hex");
@@ -42,10 +40,6 @@ export default class RegisterUserService implements Service<Request, Response, N
         username: username.toLowerCase(),
         password: await createHash(password),
         email,
-        first_name: first_name.toLowerCase(),
-        last_name: last_name.toLowerCase(),
-        phone,
-        role,
         verify_token,
         verify_token_active: Date.now() + 5 * (60 * 1000),
       };

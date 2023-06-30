@@ -8,6 +8,7 @@
     width: 100vw;
     min-height: 100vh;
     position: fixed;
+    background-color: rgb(240, 233, 233);
 }
 
 
@@ -90,8 +91,7 @@
 }
 
 .hero__header {
-    @apply flex flex-col gap-2;
-    width: calc(100% - 20%);
+    @apply flex flex-col gap-2 md:w-[70%]
 }
 
 .header--main {
@@ -117,8 +117,9 @@
     @apply md:grid lg:grid-cols-2 flex flex-col gap-2
 }
 .feed__item{
-    @apply p-4 border bg-white rounded-lg shadow-md col-span-1 hover:translate-y-[-1px] transition-all cursor-pointer
+    @apply relative bg-white p-4 rounded-lg col-span-1 hover:translate-y-[-1px] transition-all cursor-pointer
 }
+ 
 .item__body{
     @apply flex flex-col gap-2 w-full
 }
@@ -130,15 +131,15 @@
 @apply flex flex-col gap-0
 }
 .author__name{
-    @apply text-sm md:text-base font-medium capitalize
+    @apply text-base font-medium capitalize
 }
 
 .author__date{
-    @apply text-xs
+    @apply text-sm
 }
 
 .body__title{
-    @apply text-xl capitalize font-semibold md:text-2xl
+    @apply text-3xl capitalize font-semibold md:text-2xl
 }
 .body__interactions{
     @apply flex flex-row justify-between items-center
@@ -166,18 +167,37 @@
     -webkit-text-fill-color: transparent;
 }
 
+.form{
+    @apply max-w-xl mx-auto
+}
+
 .form__group{
     @apply mb-4
 }
 .form__title{
-    @apply mb-2 block capitalize font-medium
+    @apply mb-2 inline-block capitalize font-medium
 }
 .form__input{
-    @apply w-full border-2 rounded-md p-2 bg-transparent
+    @apply w-full border-2 rounded-md p-2 bg-transparent placeholder:capitalize
 }
 .form__input:focus{
     outline: none;
 }
 .btn--auth{
     @apply w-full bg-blue-500 h-12 text-lg text-white
+}
+.loading{
+    @apply w-[60px] h-[60px] border-[8px] border-gray-300 mx-auto mt-6;
+    border-top: 8px solid #5590CC;
+    border-radius: 100%;
+    animation: spin 1s infinite;
+}
+
+@keyframes spin {
+    0%{
+        transform: rotate(0deg);
+    }
+    100%{
+        transform: rotate(360deg);
+    }
 }

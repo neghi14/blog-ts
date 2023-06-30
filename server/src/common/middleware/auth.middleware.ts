@@ -4,7 +4,7 @@ import ErrorUtility from "../helpers/error.helper";
 import { JwtObject, verifyToken, createToken } from "../utils/jwt.utils";
 import config from "config";
 
-export const verifyAuth = async (req: Request, res: Response, next: NextFunction) => {
+const verifyAuth = async (req: Request, res: Response, next: NextFunction) => {
   try {
     //Check the header
     const session_token = get(req, "headers.authorization", "").replace(/^Bearer\s/, "");
@@ -32,3 +32,7 @@ export const verifyAuth = async (req: Request, res: Response, next: NextFunction
     return next(error);
   }
 };
+
+export function verifyLogin() {
+  return (req: Request, res: Response, next: NextFunction) => verifyAuth(req, res, next);
+}

@@ -11,7 +11,7 @@ export default class Http {
   }
 }
 
-interface responseModel {
+export interface responseModel {
   res: Response;
   statuscode: number;
   status: "success" | "error" | "failed";
