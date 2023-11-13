@@ -5,8 +5,12 @@
   "main": "index.js",
   "scripts": {
     "dev": "nodemon index.ts",
-    "build": "node dist/index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "lint": "eslint --fix --quiet",
+    "build": "rm -rf dist && tsc",
+    "prod:start": "pm2 start dist/index.js --name dev-blog",
+    "prod:stop": "pm2 stop dev-blog",
+    "prod:restart": "pm2 restart dev-blog",
+    "test": "jest"
   },
   "keywords": [],
   "author": "",
@@ -33,10 +37,13 @@
   },
   "dependencies": {
     "config": "^3.3.9",
+    "dayjs": "^1.11.10",
     "dotenv": "^16.3.1",
     "express": "^4.18.2",
+    "mysql2": "^3.6.3",
+    "pino": "^8.16.1",
+    "pino-pretty": "^10.2.3",
     "pm2": "^5.3.0",
-    "prisma": "^5.5.2",
     "zod": "^3.22.4"
   }
 }
