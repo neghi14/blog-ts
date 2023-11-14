@@ -1,20 +1,25 @@
 import config from 'config'
-import type { Application } from 'express'
+import { type Application } from 'express'
 import http from 'http'
+import { logger } from './libs/utils/logger'
+import ApiRoutes from './routes/api.routes'
 
 const port: number = config.get<number>('port')
 
 export default class {
   app: Application
   http: http.Server
+  api: ApiRoutes
   constructor (app: Application) {
     this.app = app
     this.http = http.createServer(this.app)
+    this.api = new ApiRoutes(this.app)
   }
 
-  init (): void {
+  init(): void {
     this.http.listen(port, () => {
-      console.log(`Connection successfull on port ${port}`)
+      this.api.serve()
+      logger.info(`Server Online ${port}`)
     })
   }
 }

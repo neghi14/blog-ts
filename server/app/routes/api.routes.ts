@@ -8,18 +8,18 @@ export default class {
 
   serve (): void {
     this.app.get('/ping', (req: Request, res: Response, next: NextFunction) => {
-      res.send(200)
+      res.sendStatus(200)
     })
     this.app.get('/err', (req: Request, res: Response, next: NextFunction) => {
       next(new Error())
     })
     this.app.all('*', (req: Request, res: Response, next: NextFunction) => {
-      res.send(404)
+      res.sendStatus(404)
     })
 
     this.app.use(
       (_err: Error, req: Request, res: Response, next: NextFunction): void => {
-        res.send(500)
+        res.sendStatus(500)
       }
     )
   }

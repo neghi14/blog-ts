@@ -9,13 +9,9 @@ const app: express.Application = express()
 
 new Server(app).init()
 new ApiRoutes(app).serve()
-const connection = mysql.createConnection(config.get('database'))
-connection.connect(() => {
-  console.log('connected')
-})
-
-connection.query('SELECT * FROM users', (err) => {
-  if (err !== null) console.log(err)
-})
+// const connection = mysql.createConnection(config.get('database'))
+// connection.connect(() => {
+//   console.log('connected')
+// })
 
 export { app }
