@@ -1,7 +1,7 @@
 import config from 'config'
 import { type Application } from 'express'
 import http from 'http'
-import { logger } from './libs/utils/logger'
+import { logger } from './libs/utils/index'
 import ApiRoutes from './routes/api.routes'
 import { cors, httpLogger } from './middleware/index'
 

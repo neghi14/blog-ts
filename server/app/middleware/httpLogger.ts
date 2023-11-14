@@ -1,5 +1,5 @@
 import type { NextFunction, Request, Response } from 'express'
-import { logger } from '../libs/utils/logger'
+import { logger } from '../libs/utils/index'
 import { white, green, red } from 'picocolors'
 
 export const httpLogger = (
