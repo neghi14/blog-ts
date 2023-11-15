@@ -23,7 +23,9 @@ For frontend testing, I will not write any test.
 ## Prerequisite To Local Development
 
 Before you can proceed to testing the appliation locally, make sure you have created a database on your [planetscale](https://planetscale.com) account or a local mysql server and run the sql command found in
+
 >server/app/database/database.sql
+
 copy the connection string or details into your .env file.
 
 ## Local Development / Testing
