@@ -1,6 +1,7 @@
 import type { Application, NextFunction, Request, Response } from 'express'
 import _Error from '../libs/helpers/error'
 import { http as Http, HttpStatus } from '../libs/helpers'
+import { cors, httpLogger } from '../middleware'
 
 export default class {
   app: Application
@@ -11,6 +12,9 @@ export default class {
   }
 
   serve (): void {
+    this.app.use(cors())
+    this.app.use(httpLogger)
+
     this.app.get('/ping', (req: Request, res: Response, next: NextFunction) => {
       res.sendStatus(200)
     })
@@ -18,7 +22,7 @@ export default class {
       next(new _Error('err', 500))
     })
     this.app.all('*', (req: Request, res: Response, next: NextFunction) => {
-      res.sendStatus(404)
+      next(new _Error('Not Found', 404))
     })
 
     this.app.use(
