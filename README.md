@@ -34,7 +34,7 @@ To install and test locally
 ```bash
 git clone https://github.com/neghi14/blog-ts.git
 
-cd server / cd client
+cd server
 
 npm install
 
