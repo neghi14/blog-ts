@@ -22,9 +22,9 @@ interface HttpResponse<T> {
 
 interface ReturnData<T> {
   title: string
-  length: number
-  page: number
-  limit: number
+  length: string
+  page: string
+  limit: string
   doc: T
 }
 

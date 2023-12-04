@@ -1,3 +1,4 @@
 import { logger } from './logger'
+import { encrypt, check } from './bcrypt'
 
-export { logger }
+export { logger, encrypt, check }
